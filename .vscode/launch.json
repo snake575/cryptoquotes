@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///*": "${webRoot}/*",
+        "webpack:///./apollo/*": "${webRoot}/apollo/*",
+        "webpack:///./middleware/*": "${webRoot}/middleware/*",
+        "webpack:///./plugins/*": "${webRoot}/plugins/*",
+        "webpack:///./node_modules/*": "${webRoot}/node_modules/*",
+        "webpack:///./store/*": "${webRoot}/store/*",
+        "webpack:///./utils/*": "${webRoot}/utils/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Node",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/node_modules/nuxt/bin/nuxt-dev"
+    }
+  ]
+}

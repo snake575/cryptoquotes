@@ -1,0 +1,15 @@
+{
+  "files.insertFinalNewline": true,
+  // eslint
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  // html
+  "html.format.wrapLineLength": 80,
+  // prettier
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "cryptoquotes",
+  "version": "1.0.0",
+  "description": "CryptoQuotes",
+  "author": "Sebastián Aránguiz <sarang575@gmail.com>",
+  "license": "Copyright (c) 2017 Sebastián Aránguiz",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "deploy": "nuxt generate && netlify deploy dist",
+    "analyze": "nuxt build --analyze",
+    "monitor": "nuxt build --webpackmonitor",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^4.5.0",
+    "@nuxtjs/pwa": "^2.0.3",
+    "@nuxtjs/webpackmonitor": "^0.1.0",
+    "date-fns": "^1.29.0",
+    "highcharts": "^6.0.4",
+    "nuxt": "1.0.0-gh-447b314",
+    "tachyons": "^4.9.0",
+    "tachyons-debug": "^1.1.10",
+    "vue-highcharts": "^0.0.10",
+    "vue-multiselect": "^2.0.8",
+    "webfontloader": "^1.6.28"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-vue": "^3.14.0",
+    "netlify-cli": "^1.2.2",
+    "node-sass": "^4.7.2",
+    "pug": "^2.0.0-rc.4",
+    "pug-loader": "^2.3.0",
+    "sass-loader": "^6.0.6"
+  }
+}

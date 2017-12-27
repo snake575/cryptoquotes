@@ -1,6 +1,6 @@
-# raptor-trading
+# cryptoquotes
 
-> Raptor Trading Nuxt.js project
+> CryptoQuotes Nuxt.js project
 
 ## Build Setup
 
