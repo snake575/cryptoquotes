@@ -121,6 +121,12 @@ export const state = () => ({
     { label: '12H', seconds: '43200', range: 4 },
     { label: '1D', seconds: '86400', range: 5 },
   ],
+  intervalOptions: [
+    { label: '10S', seconds: 10 },
+    { label: '30S', seconds: 30 },
+    { label: '1M', seconds: 60 },
+    { label: '5M', seconds: 300 },
+  ],
 })
 
 export const getters = {
@@ -129,6 +135,9 @@ export const getters = {
   ),
   getTimeKeyOption: state => label => (
     state.timeKeyOptions.find(x => x.label === label)
+  ),
+  getIntervalOption: state => label => (
+    state.intervalOptions.find(x => x.label === label)
   ),
   getRefMarket: state => exchange => (
     state.refMarkets.find(x => x.name === exchange)

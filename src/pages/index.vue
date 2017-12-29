@@ -17,6 +17,24 @@
       v-model='timeKeyOption'
       v-bind='timeKeyProps'
     )
+    .dib.bb.br.b--white-20
+      .pl3
+        .pt2.label.white-40.f8 Rotate market
+        .flex
+          toggle-button.toggle(
+            v-model='rotateMarket'
+            :height='14' :width='32'
+            :color="{ unchecked: '#242424' }"
+          )
+          v-multiselect(
+            v-model='rotateMarketInterval'
+            label='label'
+            trackBy='label'
+            :options='intervalOptions'
+            :searchable='false'
+            :show-labels='false'
+            :allow-empty='false'
+          )
     .flex-auto.bb.b--white-20.pv2.ph3
       .flex.items-center
         .dib.pr3 {{ marketOption.currencies[0] | upper }}
@@ -85,18 +103,24 @@ export default {
     let quotesMarketOption = store.state.quotesMarkets[0]
     let marketOption = store.state.marketOptions[0]
     let timeKeyOption = store.state.timeKeyOptions[2]
+    let rotateMarket = false
+    let rotateMarketInterval = store.state.intervalOptions[0]
     // Query string options
     const {
       re = refMarketOption.name,
       m = marketOption.name,
       qe = quotesMarketOption.name,
       tk = timeKeyOption.label,
+      r = rotateMarket,
+      i = rotateMarketInterval.label,
     } = query
     // Set options from query string
     refMarketOption = store.getters.getRefMarket(re)
     quotesMarketOption = store.getters.getQuotesMarket(qe)
     marketOption = store.getters.getMarketOption(m)
     timeKeyOption = store.getters.getTimeKeyOption(tk)
+    rotateMarket = Boolean(r)
+    rotateMarketInterval = store.getters.getIntervalOption(i)
     // Fetch market data
     await Promise.all([
       store.dispatch('fetchRefMarketData', {
@@ -115,7 +139,12 @@ export default {
     ])
     // Return data
     return {
-      refMarketOption, quotesMarketOption, marketOption, timeKeyOption,
+      refMarketOption,
+      quotesMarketOption,
+      marketOption,
+      timeKeyOption,
+      rotateMarket,
+      rotateMarketInterval,
     }
   },
   data() {
@@ -124,6 +153,7 @@ export default {
       timeKeyOptions,
       refMarkets,
       quotesMarkets,
+      intervalOptions,
     } = this.$store.state
     return {
       // Market
@@ -134,6 +164,9 @@ export default {
         placeholder: 'Select a market',
         options: marketOptions,
       },
+      // Market rotation
+      intervalOptions,
+      rotateMarketIntervalId: null,
       // Reference market
       refMarketProps: {
         label: 'Reference',
@@ -252,6 +285,18 @@ export default {
       this.chartOptions.series[4].data = this.offsetSellData
       this.chartOptions.rangeSelector.selected = this.timeKeyOption.range
     },
+    updateMarketRotation() {
+      if (this.rotateMarket) {
+        this.rotateMarketIntervalId = setInterval(() => {
+          const { marketOptions } = this.$store.state
+          let index = marketOptions.findIndex(x => x.name === this.marketOption.name) + 1
+          if (index === marketOptions.length) index = 0
+          this.marketOption = this.$store.state.marketOptions[index]
+        }, this.rotateMarketInterval.seconds * 1000)
+      } else {
+        clearInterval(this.rotateMarketIntervalId)
+      }
+    },
     reload() {
       this.$router.replace({ path: this.$route.path, query: this.query })
     },
@@ -266,6 +311,8 @@ export default {
         qe: this.quotesMarketOption.name,
         qm: this.marketOption.markets[1],
         tk: this.timeKeyOption.label,
+        r: this.rotateMarket,
+        i: this.rotateMarketInterval.label,
       }
     },
     refMarketData() {
@@ -325,6 +372,9 @@ export default {
     timeKeyOption() {
       this.reload()
     },
+    rotateMarket() {
+      this.updateMarketRotation()
+    },
   },
   filters: {
     upper(value) {
@@ -346,6 +396,7 @@ export default {
   },
   mounted() {
     this.updateChart()
+    this.updateMarketRotation()
   },
 }
 </script>
@@ -353,5 +404,10 @@ export default {
 <style scoped>
 .min-width-150 {
   min-width: 150px;
+}
+.toggle {
+  padding-right: 8px;
+  padding-top: 2px;
+  width: 100%;
 }
 </style>
