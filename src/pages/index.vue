@@ -312,7 +312,7 @@ export default {
     quotesMarketOption() {
       this.reload()
     },
-    async marketOption() {
+    marketOption() {
       this.reload()
     },
     timeKeyOption() {
