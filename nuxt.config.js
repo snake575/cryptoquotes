@@ -14,6 +14,7 @@ module.exports = {
     'tachyons/css/tachyons.min.css',
     // 'tachyons-debug/css/tachyons-debug.min.css',
     'vue-multiselect/dist/vue-multiselect.min.css',
+    '~/assets/multiselect.css',
   ],
   // Loading progress-bar
   // https://nuxtjs.org/api/configuration-loading
@@ -31,6 +32,7 @@ module.exports = {
   // https://nuxtjs.org/api/configuration-plugins
   plugins: [
     '~/plugins/highcharts.js',
+    '~/plugins/multiselect.js',
     '~/plugins/webFontLoader.js',
   ],
   // Modules configuration
