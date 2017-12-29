@@ -26,6 +26,7 @@
     "tachyons": "^4.9.0",
     "tachyons-debug": "^1.1.10",
     "vue-highcharts": "^0.0.10",
+    "vue-js-toggle-button": "^1.2.2",
     "vue-multiselect": "^2.0.8",
     "webfontloader": "^1.6.28"
   },

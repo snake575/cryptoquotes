@@ -33,6 +33,7 @@ module.exports = {
   plugins: [
     '~/plugins/highcharts.js',
     '~/plugins/multiselect.js',
+    '~/plugins/toggleButton.js',
     '~/plugins/webFontLoader.js',
   ],
   // Modules configuration
