@@ -23,7 +23,7 @@
         .flex
           toggle-button.toggle(
             v-model='rotateMarket'
-            :height='14' :width='32'
+            :height='11' :width='32'
             :color="{ unchecked: '#242424' }"
           )
           v-multiselect(
@@ -407,7 +407,7 @@ export default {
 }
 .toggle {
   padding-right: 8px;
-  padding-top: 2px;
+  padding-top: 4px;
   width: 100%;
 }
 </style>
