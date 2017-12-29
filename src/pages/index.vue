@@ -88,11 +88,8 @@ export default {
     // Query string options
     const {
       re = refMarketOption.name,
-      rm = marketOption.markets[0],
       m = marketOption.name,
-      c = marketOption.convert,
       qe = quotesMarketOption.name,
-      qm = marketOption.markets[1],
       tk = timeKeyOption.label,
     } = query
     // Set options from query string
@@ -102,9 +99,19 @@ export default {
     timeKeyOption = store.getters.getTimeKeyOption(tk)
     // Fetch market data
     await Promise.all([
-      store.dispatch('fetchRefMarketData', { exchange: re, market: rm, convert: c }),
-      store.dispatch('fetchQuotesMarketData', { exchange: qe, market: qm }),
-      store.dispatch('fetchPrice', { exchange: 'oxr', market: 'usdclp' }),
+      store.dispatch('fetchRefMarketData', {
+        exchange: refMarketOption.name,
+        market: marketOption.markets[0],
+        convert: marketOption.convert,
+      }),
+      store.dispatch('fetchQuotesMarketData', {
+        exchange: quotesMarketOption.name,
+        market: marketOption.markets[1],
+      }),
+      store.dispatch('fetchPrice', {
+        exchange: 'oxr',
+        market: 'usdclp',
+      }),
     ])
     // Return data
     return {
