@@ -1,2 +1,2 @@
 
-Copyright (C) 2017 Sebastián Aránguiz <sarang575@gmail.com>
+Copyright (C) 2018 Sebastián Aránguiz <sarang575@gmail.com>

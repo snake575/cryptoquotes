@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "CryptoQuotes",
   "author": "Sebastián Aránguiz <sarang575@gmail.com>",
-  "license": "Copyright (c) 2017 Sebastián Aránguiz",
+  "license": "Copyright (c) 2018 Sebastián Aránguiz",
   "private": true,
   "scripts": {
     "dev": "nuxt",
