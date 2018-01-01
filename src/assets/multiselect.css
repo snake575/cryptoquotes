@@ -45,3 +45,8 @@
   background-color: inherit;
   color: rgba(255, 255, 255, 0.2);
 }
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: #F3F3F3;
+  color: #35495E;
+}
