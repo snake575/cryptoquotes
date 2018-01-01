@@ -17,13 +17,13 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^4.5.0",
-    "@nuxtjs/pwa": "^2.0.3",
+    "@nuxtjs/axios": "^4.5.2",
+    "@nuxtjs/pwa": "^2.0.5",
     "@nuxtjs/webpackmonitor": "^0.1.0",
     "date-fns": "^1.29.0",
     "highcharts": "^6.0.4",
-    "nuxt": "1.0.0-gh-447b314",
-    "tachyons": "^4.9.0",
+    "nuxt": "1.0.0-gh-a5b6d8e",
+    "tachyons": "^4.9.1",
     "tachyons-debug": "^1.1.10",
     "vue-highcharts": "^0.0.10",
     "vue-js-toggle-button": "^1.2.2",
@@ -31,11 +31,11 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "eslint": "^4.11.0",
+    "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-vue": "^3.14.0",
+    "eslint-plugin-vue": "^4.0.0",
     "netlify-cli": "^1.2.2",
     "node-sass": "^4.7.2",
     "pug": "^2.0.0-rc.4",

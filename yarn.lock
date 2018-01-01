@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@nuxtjs/axios@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-4.5.0.tgz#06c37289a17c016d7bf19abb29a5ea841c87d09a"
+"@nuxtjs/axios@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-4.5.2.tgz#9722d1ed07f516b7de25f62e3f21d95a0579d431"
   dependencies:
     axios "^0.17.1"
     chalk "^2.3.0"
     debug "^3.1.0"
-    whatwg-url "^6.3.0"
+    whatwg-url "^6.4.0"
 
-"@nuxtjs/icon@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/icon/-/icon-2.0.1.tgz#c770a487d265e86bd1253d9caf119f1d1386b49b"
+"@nuxtjs/icon@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/icon/-/icon-2.0.2.tgz#a560ea96644e575c2a51ae320aa31af025c4e2ad"
   dependencies:
-    fs-extra "^4.0.2"
+    fs-extra "^5.0.0"
     hash-sum "^1.0.2"
     jimp "^0.2.28"
 
@@ -25,17 +25,17 @@
   dependencies:
     hash-sum "^1.0.2"
 
-"@nuxtjs/meta@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/meta/-/meta-2.0.1.tgz#9262fe5a32c7d143b3595abe4f22733db7dd278e"
+"@nuxtjs/meta@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/meta/-/meta-2.0.2.tgz#48f450913f638ae16711d0c8a8798f5f80376d21"
 
-"@nuxtjs/pwa@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/pwa/-/pwa-2.0.4.tgz#df1ab5f38d55cd2e6a9d391a5c16103dcb9fbf1b"
+"@nuxtjs/pwa@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/pwa/-/pwa-2.0.5.tgz#2685ad7ba95184b30750143f085819b06b45aee0"
   dependencies:
-    "@nuxtjs/icon" "^2.0.1"
+    "@nuxtjs/icon" "^2.0.2"
     "@nuxtjs/manifest" "^2.1.0"
-    "@nuxtjs/meta" "^2.0.1"
+    "@nuxtjs/meta" "^2.0.2"
     "@nuxtjs/workbox" "^2.1.1"
 
 "@nuxtjs/webpackmonitor@^0.1.0":
@@ -1659,7 +1659,7 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
-css-hot-loader@^1.3.4:
+css-hot-loader@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/css-hot-loader/-/css-hot-loader-1.3.5.tgz#bc070307cc5f881dbaea12bc54d354133d08a28b"
   dependencies:
@@ -1815,7 +1815,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.6.8:
   dependencies:
     ms "2.0.0"
 
-debug@^3.0.1, debug@^3.1.0:
+debug@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
@@ -2112,7 +2112,7 @@ es6-promise@^3.0.2:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
-es6-promise@^4.2.1:
+es6-promise@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.2.tgz#f722d7769af88bd33bc13ec6605e1f92966b82d9"
 
@@ -2204,12 +2204,12 @@ eslint-plugin-import@^2.8.0:
     minimatch "^3.0.3"
     read-pkg-up "^2.0.0"
 
-eslint-plugin-vue@^3.14.0:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-3.14.0.tgz#8d2462b7dcf840a353b7eb5a92e6394581d5d697"
+eslint-plugin-vue@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-4.0.0.tgz#b93f2b21c32d4b88794962a56ce662621b268acd"
   dependencies:
-    requireindex "^1.1.0"
-    vue-eslint-parser "^2.0.1-beta.1"
+    require-all "^2.2.0"
+    vue-eslint-parser "^2.0.1"
 
 eslint-restricted-globals@^0.1.1:
   version "0.1.1"
@@ -2222,21 +2222,25 @@ eslint-scope@^3.7.1:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint@^4.11.0:
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.13.1.tgz#0055e0014464c7eb7878caf549ef2941992b444f"
+eslint-visitor-keys@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
+
+eslint@^4.14.0:
+  version "4.14.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.14.0.tgz#96609768d1dd23304faba2d94b7fefe5a5447a82"
   dependencies:
     ajv "^5.3.0"
     babel-code-frame "^6.22.0"
     chalk "^2.1.0"
     concat-stream "^1.6.0"
     cross-spawn "^5.1.0"
-    debug "^3.0.1"
+    debug "^3.1.0"
     doctrine "^2.0.2"
     eslint-scope "^3.7.1"
+    eslint-visitor-keys "^1.0.0"
     espree "^3.5.2"
     esquery "^1.0.0"
-    estraverse "^4.2.0"
     esutils "^2.0.2"
     file-entry-cache "^2.0.0"
     functional-red-black-tree "^1.0.1"
@@ -2264,7 +2268,7 @@ eslint@^4.11.0:
     table "^4.0.1"
     text-table "~0.2.0"
 
-espree@^3.5.1, espree@^3.5.2:
+espree@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/espree/-/espree-3.5.2.tgz#756ada8b979e9dcfcdb30aad8d1a9304a905e1ca"
   dependencies:
@@ -2292,7 +2296,7 @@ esrecurse@^4.1.0:
     estraverse "^4.1.0"
     object-assign "^4.0.1"
 
-estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1, estraverse@^4.2.0:
+estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-4.2.0.tgz#0dee3fed31fcd469618ce7342099fc1afa0bdb13"
 
@@ -2655,14 +2659,6 @@ fs-extra@^3.0.1:
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^3.0.0"
-    universalify "^0.1.0"
-
-fs-extra@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
-  dependencies:
-    graceful-fs "^4.1.2"
-    jsonfile "^4.0.0"
     universalify "^0.1.0"
 
 fs-extra@^5.0.0:
@@ -3033,7 +3029,20 @@ html-entities@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
 
-html-minifier@3.5.7, html-minifier@^3.2.3:
+html-minifier@3.5.8:
+  version "3.5.8"
+  resolved "https://registry.yarnpkg.com/html-minifier/-/html-minifier-3.5.8.tgz#5ccdb1f73a0d654e6090147511f6e6b2ee312700"
+  dependencies:
+    camel-case "3.0.x"
+    clean-css "4.1.x"
+    commander "2.12.x"
+    he "1.1.x"
+    ncname "1.0.x"
+    param-case "2.1.x"
+    relateurl "0.2.x"
+    uglify-js "3.3.x"
+
+html-minifier@^3.2.3:
   version "3.5.7"
   resolved "https://registry.yarnpkg.com/html-minifier/-/html-minifier-3.5.7.tgz#511e69bb5a8e7677d1012ebe03819aa02ca06208"
   dependencies:
@@ -4248,9 +4257,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nuxt@1.0.0-gh-447b314:
-  version "1.0.0-gh-447b314"
-  resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-1.0.0-gh-447b314.tgz#7a65ae9f33def555c9eaafcbc80ed5fbc8497faf"
+nuxt@1.0.0-gh-a5b6d8e:
+  version "1.0.0-gh-a5b6d8e"
+  resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-1.0.0-gh-a5b6d8e.tgz#4343e8d3dedf1bdf21536a3bf27fba0d57579a6e"
   dependencies:
     "@nuxtjs/youch" "^3.1.0"
     ansi-html "^0.0.7"
@@ -4264,10 +4273,10 @@ nuxt@1.0.0-gh-447b314:
     clone "^2.1.1"
     compression "^1.7.1"
     connect "^3.6.5"
-    css-hot-loader "^1.3.4"
+    css-hot-loader "^1.3.5"
     css-loader "^0.28.7"
     debug "^3.1.0"
-    es6-promise "^4.2.1"
+    es6-promise "^4.2.2"
     etag "^1.8.1"
     extract-text-webpack-plugin "^3.0.2"
     file-loader "^1.1.6"
@@ -4276,7 +4285,7 @@ nuxt@1.0.0-gh-447b314:
     fs-extra "^5.0.0"
     glob "^7.1.2"
     hash-sum "^1.0.2"
-    html-minifier "3.5.7"
+    html-minifier "3.5.8"
     html-webpack-plugin "^2.30.1"
     lodash "^4.17.4"
     lru-cache "^4.1.1"
@@ -4296,10 +4305,10 @@ nuxt@1.0.0-gh-447b314:
     server-destroy "^1.0.1"
     source-map "^0.6.1"
     style-resources-loader "^1.0.0"
-    uglifyjs-webpack-plugin "^1.1.4"
+    uglifyjs-webpack-plugin "^1.1.5"
     url-loader "^0.6.2"
     vue "^2.5.13"
-    vue-loader "^13.6.0"
+    vue-loader "^13.6.2"
     vue-meta "^1.4.0"
     vue-router "^3.0.1"
     vue-server-renderer "^2.5.13"
@@ -4307,7 +4316,7 @@ nuxt@1.0.0-gh-447b314:
     vuex "^3.0.1"
     webpack "^3.10.0"
     webpack-bundle-analyzer "^2.9.0"
-    webpack-dev-middleware "^2.0.2"
+    webpack-dev-middleware "^2.0.3"
     webpack-hot-middleware "^2.21.0"
     webpack-node-externals "^1.6.0"
 
@@ -5801,6 +5810,10 @@ request@~2.79.0:
     tunnel-agent "~0.4.1"
     uuid "^3.0.0"
 
+require-all@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/require-all/-/require-all-2.2.0.tgz#b4420c233ac0282d0ff49b277fb880a8b5de0894"
+
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
@@ -5819,10 +5832,6 @@ require-uncached@^1.0.3:
   dependencies:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
-
-requireindex@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
 
 resolve-from@^1.0.0:
   version "1.0.1"
@@ -6391,9 +6400,9 @@ tachyons-debug@^1.1.10:
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/tachyons-debug/-/tachyons-debug-1.1.10.tgz#3eaaa05e2d0714d7bcfa8972991f67ddc8cc980b"
 
-tachyons@^4.9.0:
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-4.9.0.tgz#2df058ea6b6eb3d2be12d62a69fecb0f6b1e0534"
+tachyons@^4.9.1:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-4.9.1.tgz#f88d7059d6e53c833bf9351a26f18314c8fdc76a"
 
 tapable@^0.2.7:
   version "0.2.8"
@@ -6536,7 +6545,7 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-uglify-es@^3.2.1:
+uglify-es@3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.2.2.tgz#15c62b7775002c81b7987a1c49ecd3f126cace73"
   dependencies:
@@ -6546,6 +6555,13 @@ uglify-es@^3.2.1:
 uglify-js@3.2.x, uglify-js@^3.0.6:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.2.2.tgz#870e4b34ed733d179284f9998efd3293f7fd73f6"
+  dependencies:
+    commander "~2.12.1"
+    source-map "~0.6.1"
+
+uglify-js@3.3.x:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.3.4.tgz#d8ebb76f201a3798ac2f0b6519642fcca4a99834"
   dependencies:
     commander "~2.12.1"
     source-map "~0.6.1"
@@ -6571,16 +6587,16 @@ uglifyjs-webpack-plugin@^0.4.6:
     uglify-js "^2.8.29"
     webpack-sources "^1.0.1"
 
-uglifyjs-webpack-plugin@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.1.4.tgz#e43ad6e736c315024eb99481a7cc9362d6a066be"
+uglifyjs-webpack-plugin@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.1.5.tgz#5ec4a16da0fd10c96538f715caed10dbdb180875"
   dependencies:
     cacache "^10.0.0"
     find-cache-dir "^1.0.0"
     schema-utils "^0.3.0"
     serialize-javascript "^1.4.0"
     source-map "^0.6.1"
-    uglify-es "^3.2.1"
+    uglify-es "3.2.2"
     webpack-sources "^1.0.1"
     worker-farm "^1.4.1"
 
@@ -6765,13 +6781,14 @@ void-elements@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
-vue-eslint-parser@^2.0.1-beta.1:
-  version "2.0.1-beta.2"
-  resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.1-beta.2.tgz#82e5130ac18ae4b0c894a7c831b55ec92478fa2f"
+vue-eslint-parser@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.1.tgz#30135771c4fad00fdbac4542a2d59f3b1d776834"
   dependencies:
     debug "^3.1.0"
     eslint-scope "^3.7.1"
-    espree "^3.5.1"
+    eslint-visitor-keys "^1.0.0"
+    espree "^3.5.2"
     esquery "^1.0.0"
     lodash "^4.17.4"
 
@@ -6787,9 +6804,9 @@ vue-js-toggle-button@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/vue-js-toggle-button/-/vue-js-toggle-button-1.2.2.tgz#0062f8fa0f34babf2d76c77d88ccbe4d462ce1ac"
 
-vue-loader@^13.6.0:
-  version "13.6.1"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.6.1.tgz#3ad365271b3db382722ab2eb0d6936d8d52ec2ce"
+vue-loader@^13.6.2:
+  version "13.6.2"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.6.2.tgz#43d9688f2c80400916104d1138941aacd7e389cb"
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"
@@ -6892,7 +6909,7 @@ webpack-bundle-analyzer@^2.9.0:
     opener "^1.4.3"
     ws "^3.3.1"
 
-webpack-dev-middleware@^2.0.2:
+webpack-dev-middleware@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-2.0.3.tgz#44e15480ec58d275417ac4d93a0126c7b72450bd"
   dependencies:
@@ -6970,7 +6987,7 @@ webpack@^3.10.0:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-whatwg-url@^6.3.0:
+whatwg-url@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-6.4.0.tgz#08fdf2b9e872783a7a1f6216260a1d66cc722e08"
   dependencies:
