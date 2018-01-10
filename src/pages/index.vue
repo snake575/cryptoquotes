@@ -147,6 +147,24 @@ export default {
       rotateMarketInterval,
     }
   },
+  filters: {
+    upper(value) {
+      if (!value) return ''
+      return value.toString().toUpperCase()
+    },
+    capitalize(value) {
+      if (!value) return ''
+      return value.toString().charAt(0).toUpperCase() + value.slice(1)
+    },
+    number(value) {
+      if (!value) return ''
+      return parseFloat(value).toLocaleString()
+    },
+    percent(value) {
+      if (!value) return ''
+      return parseFloat(value).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 })
+    },
+  },
   data() {
     const {
       marketOptions,
@@ -265,42 +283,6 @@ export default {
       },
     }
   },
-  methods: {
-    getPriceData(dataSet) {
-      if (!dataSet) return []
-      const data = dataSet[this.timeKeyOption.seconds]
-      return data.map(i => [i[0] * 1000, i[4]])
-    },
-    getOffsetData(quotes) {
-      return quotes.map((quote) => {
-        const ref = this.refMarketData.find(r => r[0] === quote[0])
-        return [quote[0], ref ? ((quote[1] / ref[1]) - 1) * 100 : null]
-      })
-    },
-    updateChart() {
-      this.chartOptions.series[0].data = this.refMarketData
-      this.chartOptions.series[1].data = this.quotesBuyData
-      this.chartOptions.series[2].data = this.quotesSellData
-      this.chartOptions.series[3].data = this.offsetBuyData
-      this.chartOptions.series[4].data = this.offsetSellData
-      this.chartOptions.rangeSelector.selected = this.timeKeyOption.range
-    },
-    updateMarketRotation() {
-      if (this.rotateMarket) {
-        this.rotateMarketIntervalId = setInterval(() => {
-          const { marketOptions } = this.$store.state
-          let index = marketOptions.findIndex(x => x.name === this.marketOption.name) + 1
-          if (index === marketOptions.length) index = 0
-          this.marketOption = this.$store.state.marketOptions[index]
-        }, this.rotateMarketInterval.seconds * 1000)
-      } else {
-        clearInterval(this.rotateMarketIntervalId)
-      }
-    },
-    reload() {
-      this.$router.replace({ path: this.$route.path, query: this.query })
-    },
-  },
   computed: {
     query() {
       return {
@@ -376,27 +358,45 @@ export default {
       this.updateMarketRotation()
     },
   },
-  filters: {
-    upper(value) {
-      if (!value) return ''
-      return value.toString().toUpperCase()
-    },
-    capitalize(value) {
-      if (!value) return ''
-      return value.toString().charAt(0).toUpperCase() + value.slice(1)
-    },
-    number(value) {
-      if (!value) return ''
-      return parseFloat(value).toLocaleString()
-    },
-    percent(value) {
-      if (!value) return ''
-      return parseFloat(value).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 })
-    },
-  },
   mounted() {
     this.updateChart()
     this.updateMarketRotation()
+  },
+  methods: {
+    getPriceData(dataSet) {
+      if (!dataSet) return []
+      const data = dataSet[this.timeKeyOption.seconds]
+      return data.map(i => [i[0] * 1000, i[4]])
+    },
+    getOffsetData(quotes) {
+      return quotes.map((quote) => {
+        const ref = this.refMarketData.find(r => r[0] === quote[0])
+        return [quote[0], ref ? ((quote[1] / ref[1]) - 1) * 100 : null]
+      })
+    },
+    updateChart() {
+      this.chartOptions.series[0].data = this.refMarketData
+      this.chartOptions.series[1].data = this.quotesBuyData
+      this.chartOptions.series[2].data = this.quotesSellData
+      this.chartOptions.series[3].data = this.offsetBuyData
+      this.chartOptions.series[4].data = this.offsetSellData
+      this.chartOptions.rangeSelector.selected = this.timeKeyOption.range
+    },
+    updateMarketRotation() {
+      if (this.rotateMarket) {
+        this.rotateMarketIntervalId = setInterval(() => {
+          const { marketOptions } = this.$store.state
+          let index = marketOptions.findIndex(x => x.name === this.marketOption.name) + 1
+          if (index === marketOptions.length) index = 0
+          this.marketOption = this.$store.state.marketOptions[index]
+        }, this.rotateMarketInterval.seconds * 1000)
+      } else {
+        clearInterval(this.rotateMarketIntervalId)
+      }
+    },
+    reload() {
+      this.$router.replace({ path: this.$route.path, query: this.query })
+    },
   },
 }
 </script>
