@@ -50,18 +50,16 @@ module.exports = {
   // https://nuxtjs.org/api/configuration-build
   build: {
     // Extend the webpack configuration
-    extend(config, { dev, client }) {
+    extend(config, { isDev, isClient }) {
       // Run ESLINT on save
-      if (dev && client) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
         })
-      }
-      // Generate source maps as source-map
-      if (dev) {
+        // Generate source maps as source-map
         config.devtool = 'source-map' // eslint-disable-line no-param-reassign
       }
     },
