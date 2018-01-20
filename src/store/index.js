@@ -73,7 +73,7 @@ class Price {
 
 export const state = () => ({
   quotesMarkets: [
-    new QuotesMarket('surbtc', 'SurBTC', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
+    new QuotesMarket('surbtc', 'Buda', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
     new QuotesMarket('cryptomkt', 'CryptoMKT', ['ethclp']),
   ],
   refMarkets: [
