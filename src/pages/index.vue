@@ -119,7 +119,7 @@ export default {
     quotesMarketOption = store.getters.getQuotesMarket(qe)
     marketOption = store.getters.getMarketOption(m)
     timeKeyOption = store.getters.getTimeKeyOption(tk)
-    rotateMarket = Boolean(r)
+    rotateMarket = JSON.parse(r)
     rotateMarketInterval = store.getters.getIntervalOption(i)
     // Fetch market data
     await Promise.all([
