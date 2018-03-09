@@ -40,6 +40,7 @@ module.exports = {
   // https://nuxtjs.org/api/configuration-modules
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/google-analytics',
     '@nuxtjs/pwa',
     '@nuxtjs/webpackmonitor',
   ],
@@ -77,5 +78,10 @@ module.exports = {
   // https://github.com/nuxt-community/axios-module#options
   axios: {
     baseURL: 'https://7vb7k3j4rb.execute-api.us-east-1.amazonaws.com/dev/',
+  },
+  // Nuxt Google Analytics module configuration
+  // https://github.com/nuxt-community/analytics-module#setup
+  'google-analytics': {
+    id: 'UA-115471070-1',
   },
 }
