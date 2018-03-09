@@ -77,6 +77,5 @@ module.exports = {
   // https://github.com/nuxt-community/axios-module#options
   axios: {
     baseURL: 'https://7vb7k3j4rb.execute-api.us-east-1.amazonaws.com/dev/',
-    credentials: false,
   },
 }
