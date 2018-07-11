@@ -16,14 +16,17 @@ class RefMarket extends Market {
       { market: m, data: null, expire: null }
     ))
   }
+
   getData(market) {
     return this.dataSets.find(x => x.market === market)
   }
+
   setData(market, data) {
     const dataSet = this.getData(market)
     dataSet.data = data
     dataSet.expire = Date.now() + 300
   }
+
   getPrice(market) {
     let { data } = this.getData(market)
     if (!data) return null
@@ -39,15 +42,18 @@ class QuotesMarket extends Market {
       { market: m, buy: null, sell: null, expire: null }
     ))
   }
+
   getData(market) {
     return this.dataSets.find(x => x.market === market)
   }
+
   setData(market, { buy, sell }) {
     const dataSet = this.getData(market)
     dataSet.buy = buy
     dataSet.sell = sell
     dataSet.expire = Date.now() + 300
   }
+
   getPrice(market, side) {
     let data = this.getData(market)[side]
     if (!data) return null
@@ -64,6 +70,7 @@ class Price {
     this.timestamp = null
     this.expire = null
   }
+
   set({ price, timestamp }) {
     this.price = price
     this.timestamp = timestamp
