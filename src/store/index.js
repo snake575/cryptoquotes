@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow, no-param-reassign, object-curly-newline */
 import { endOfDay, getTime } from 'date-fns'
 
-class Market {
+class Exchange {
   constructor(name, label, markets) {
     this.name = name
     this.label = label
@@ -9,7 +9,7 @@ class Market {
   }
 }
 
-class RefMarket extends Market {
+class ReferenceExchange extends Exchange {
   constructor(name, label, markets) {
     super(name, label, markets)
     this.dataSets = markets.map(m => (
@@ -35,7 +35,7 @@ class RefMarket extends Market {
   }
 }
 
-class QuotesMarket extends Market {
+class QuotesExchange extends Exchange {
   constructor(name, label, markets) {
     super(name, label, markets)
     this.dataSets = markets.map(m => (
@@ -79,14 +79,14 @@ class Price {
 }
 
 export const state = () => ({
-  quotesMarkets: [
-    new QuotesMarket('surbtc', 'Buda', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
-    new QuotesMarket('cryptomkt', 'CryptoMKT', ['ethclp']),
+  quotesExchanges: [
+    new QuotesExchange('surbtc', 'Buda', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
+    new QuotesExchange('cryptomkt', 'CryptoMKT', ['ethclp']),
   ],
-  refMarkets: [
-    new RefMarket('bitfinex', 'Bitfinex', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
-    new RefMarket('kraken', 'Kraken', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
-    new RefMarket('poloniex', 'Poloniex', ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc']),
+  referenceExchanges: [
+    new ReferenceExchange('bitfinex', 'Bitfinex', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
+    new ReferenceExchange('kraken', 'Kraken', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
+    new ReferenceExchange('poloniex', 'Poloniex', ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc']),
   ],
   prices: [
     new Price('usdclp', 'USDCLP'),
@@ -146,23 +146,23 @@ export const getters = {
   getIntervalOption: state => label => (
     state.intervalOptions.find(x => x.label === label)
   ),
-  getRefMarket: state => exchange => (
-    state.refMarkets.find(x => x.name === exchange)
+  getReferenceExchange: state => exchange => (
+    state.referenceExchanges.find(x => x.name === exchange)
   ),
-  getQuotesMarket: state => exchange => (
-    state.quotesMarkets.find(x => x.name === exchange)
+  getQuotesExchange: state => exchange => (
+    state.quotesExchanges.find(x => x.name === exchange)
   ),
-  getRefMarketData: (state, getters) => (exchange, market) => (
-    getters.getRefMarket(exchange).getData(market)
+  getReferenceExchangeData: (state, getters) => (exchange, market) => (
+    getters.getReferenceExchange(exchange).getData(market)
   ),
-  getQuotesMarketData: (state, getters) => (exchange, market) => (
-    getters.getQuotesMarket(exchange).getData(market)
+  getQuotesExchangeData: (state, getters) => (exchange, market) => (
+    getters.getQuotesExchange(exchange).getData(market)
   ),
-  getRefMarketPrice: (state, getters) => (exchange, market) => (
-    getters.getRefMarket(exchange).getPrice(market)
+  getReferenceExchangePrice: (state, getters) => (exchange, market) => (
+    getters.getReferenceExchange(exchange).getPrice(market)
   ),
-  getQuotesMarketPrice: (state, getters) => (exchange, market, side) => (
-    getters.getQuotesMarket(exchange).getPrice(market, side)
+  getQuotesExchangePrice: (state, getters) => (exchange, market, side) => (
+    getters.getQuotesExchange(exchange).getPrice(market, side)
   ),
   getPrice: state => market => (
     state.prices.find(x => x.name === market)
@@ -173,11 +173,11 @@ export const mutations = {
   updatePrice(state, { market, data }) {
     state.prices.find(x => x.name === market).set(data)
   },
-  updateRefMarketData(state, { exchange, market, data }) {
-    state.refMarkets.find(x => x.name === exchange).setData(market, data)
+  updateReferenceExchangeData(state, { exchange, market, data }) {
+    state.referenceExchanges.find(x => x.name === exchange).setData(market, data)
   },
-  updateQuotesMarketData(state, { exchange, market, data }) {
-    state.quotesMarkets.find(x => x.name === exchange).setData(market, data)
+  updateQuotesExchangeData(state, { exchange, market, data }) {
+    state.quotesExchanges.find(x => x.name === exchange).setData(market, data)
   },
 }
 
@@ -188,21 +188,21 @@ export const actions = {
     const data = await this.$axios.$get(`price/markets/${exchange}/${market}/1d`)
     commit('updatePrice', { exchange, market, data })
   },
-  async fetchRefMarketData({ getters, commit }, { exchange, market, convert }) {
-    const dataSet = getters.getRefMarketData(exchange, market)
+  async fetchReferenceExchangeData({ getters, commit }, { exchange, market, convert }) {
+    const dataSet = getters.getReferenceExchangeData(exchange, market)
     if (dataSet.data && dataSet.expire < Date.now()) return
     const { result: data } = await this.$axios.$get(`cryptowatch/markets/${exchange}/${market}/ohlc`, {
       params: { convert },
     })
-    commit('updateRefMarketData', { exchange, market, data })
+    commit('updateReferenceExchangeData', { exchange, market, data })
   },
-  async fetchQuotesMarketData({ getters, commit }, { exchange, market }) {
-    const dataSet = getters.getQuotesMarketData(exchange, market)
+  async fetchQuotesExchangeData({ getters, commit }, { exchange, market }) {
+    const dataSet = getters.getQuotesExchangeData(exchange, market)
     if (dataSet.buy && dataSet.sell && dataSet.expire < Date.now()) return
     const [buy, sell] = await Promise.all([
       this.$axios.$get(`quotes/markets/${exchange}/${market}/buy/ohlc`),
       this.$axios.$get(`quotes/markets/${exchange}/${market}/sell/ohlc`),
     ])
-    commit('updateQuotesMarketData', { exchange, market, data: { buy, sell } })
+    commit('updateQuotesExchangeData', { exchange, market, data: { buy, sell } })
   },
 }
