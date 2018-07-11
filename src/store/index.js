@@ -81,7 +81,7 @@ class Price {
 export const state = () => ({
   quotesExchanges: [
     new QuotesExchange('surbtc', 'Buda', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
-    new QuotesExchange('cryptomkt', 'CryptoMKT', ['ethclp']),
+    new QuotesExchange('cryptomkt', 'CryptoMKT', ['btcclp', 'ethclp']),
   ],
   referenceExchanges: [
     new ReferenceExchange('bitfinex', 'Bitfinex', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
