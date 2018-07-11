@@ -85,6 +85,7 @@ export const state = () => ({
   ],
   referenceExchanges: [
     new ReferenceExchange('bitfinex', 'Bitfinex', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
+    new ReferenceExchange('bitstamp', 'Bitstamp', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
     new ReferenceExchange('kraken', 'Kraken', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
     new ReferenceExchange('poloniex', 'Poloniex', ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc']),
   ],
