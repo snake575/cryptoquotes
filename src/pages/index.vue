@@ -190,7 +190,7 @@ export default {
         label: 'Reference',
         labelBy: 'label',
         trackBy: 'name',
-        placeholder: 'Select a market',
+        placeholder: 'Select a exchange',
         options: referenceExchanges,
       },
       // Quotes market
@@ -198,7 +198,7 @@ export default {
         label: 'Quotes',
         labelBy: 'label',
         trackBy: 'name',
-        placeholder: 'Select a market',
+        placeholder: 'Select a exchange',
         options: quotesExchanges,
       },
       // Time key
