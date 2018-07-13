@@ -92,7 +92,7 @@ const quotesExchanges = [
     ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc'],
   ),
   new QuotesExchange(
-    'cryptomkt', 'CryptoMKT', ['#3D5AFE', '#536DFE'],
+    'cryptomkt', 'CryptoMKT', ['#FF3D00', '#FF6E40'],
     ['btcclp', 'ethclp'],
   ),
 ]
