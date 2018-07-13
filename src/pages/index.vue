@@ -112,10 +112,11 @@ export default {
     store.commit('setExchangeOptions', markets)
     // Set exchanges
     let { cryptowatchExchanges, quotesExchanges } = store.state
-    cryptowatchExchanges = cryptowatchExchanges.filter(e => exchange.includes(e.name))
-    quotesExchanges = quotesExchanges.filter(e => exchange.includes(e.name))
+    const queryExchanges = Array.isArray(exchange) ? exchange : [exchange]
+    cryptowatchExchanges = cryptowatchExchanges.filter(e => queryExchanges.includes(e.name))
+    quotesExchanges = quotesExchanges.filter(e => queryExchanges.includes(e.name))
     const allExchanges = [...cryptowatchExchanges, ...quotesExchanges]
-    const exchangesList = [...new Set(exchange)]
+    const exchangesList = [...new Set(queryExchanges)]
     const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
     // Fetch exchanges data
     await Promise.all([
