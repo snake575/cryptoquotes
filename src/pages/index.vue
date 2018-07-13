@@ -41,12 +41,12 @@
           )
     .flex-auto.bb.b--white-20.pv2.ph3
       .flex.items-center
-        template(v-for='(exchange, index) in referenceExchanges')
+        template(v-for='(exchange, index) in cryptowatchExchanges')
           .dib.pr2.white-40
             | {{ exchange.label }}
             | {{ marketOption.currencies[1] | upper }}({{ marketOption.convert | upper }})
-          .dib(:class="[ index > 0 ? 'pr1' : 'pr3' ]") {{ referencePrices[index] | number }}
-          .dib.white-40.pr3(v-if='index > 0') {{ referencePriceOffsets[index] | percent }}
+          .dib(:class="[ index > 0 ? 'pr1' : 'pr3' ]") {{ cryptowatchPrices[index] | number }}
+          .dib.white-40.pr3(v-if='index > 0') {{ cryptowatchPriceOffsets[index] | percent }}
         template(v-for='(exchange, index) in quotesExchanges')
           .flex.items-center
             .dib.pr2.white-40 {{ exchange.label }} {{ marketOption.convert | upper }}
@@ -94,7 +94,7 @@ export default {
     let rotateMarketInterval = store.state.intervalOptions[0]
     // Query string options
     const {
-      exchange = [store.state.referenceExchanges[0].name],
+      exchange = [store.state.cryptowatchExchanges[0].name],
       market = marketOption.name,
       timekey = timeKeyOption.label,
       rotate = rotateMarket,
@@ -111,16 +111,16 @@ export default {
     const { markets } = marketOption
     store.commit('setExchangeOptions', markets)
     // Set exchanges
-    let { referenceExchanges, quotesExchanges } = store.state
-    referenceExchanges = referenceExchanges.filter(e => exchange.includes(e.name))
+    let { cryptowatchExchanges, quotesExchanges } = store.state
+    cryptowatchExchanges = cryptowatchExchanges.filter(e => exchange.includes(e.name))
     quotesExchanges = quotesExchanges.filter(e => exchange.includes(e.name))
-    const allExchanges = [...referenceExchanges, ...quotesExchanges]
+    const allExchanges = [...cryptowatchExchanges, ...quotesExchanges]
     const exchangesList = [...new Set(exchange)]
     const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
     // Fetch exchanges data
     await Promise.all([
-      ...referenceExchanges.map(ex => (
-        store.dispatch('fetchReferenceExchangeData', {
+      ...cryptowatchExchanges.map(ex => (
+        store.dispatch('fetchCryptowatchExchangeData', {
           exchange: ex.name,
           market: marketOption.markets[0],
           convert: marketOption.convert,
@@ -252,14 +252,14 @@ export default {
         interval: this.rotateMarketInterval.label,
       }
     },
-    referenceMarket() {
+    cryptowatchMarket() {
       return this.marketOption.markets[0]
     },
     quotesMarket() {
       return this.marketOption.markets[1]
     },
-    referenceExchanges() {
-      return this.filterExchanges(this.$store.state.referenceExchanges)
+    cryptowatchExchanges() {
+      return this.filterExchanges(this.$store.state.cryptowatchExchanges)
     },
     quotesExchanges() {
       return this.filterExchanges(this.$store.state.quotesExchanges)
@@ -267,9 +267,16 @@ export default {
     referenceExchange() {
       return this.exchanges[0]
     },
-    referencePriceSeries() {
-      return this.filterExchangeList(this.referenceExchanges, (ex) => {
-        const { data } = this.$store.getters.getReferenceExchangeData(ex.name, this.referenceMarket)
+    referenceIsQuotes() {
+      return this.referenceExchange.source === 'quotes'
+    },
+    referenceExchangeMarket() {
+      return this.referenceIsQuotes ? this.quotesMarket : this.cryptowatchMarket
+    },
+    cryptowatchPriceSeries() {
+      return this.filterExchangeList(this.cryptowatchExchanges, (ex) => {
+        const market = this.cryptowatchMarket
+        const { data } = this.$store.getters.getCryptowatchExchangeData(ex.name, market)
         return {
           data: this.getPriceData(data),
           name: ex.label,
@@ -284,7 +291,8 @@ export default {
     },
     quotesPriceSeries() {
       return this.filterExchangeList(this.quotesExchanges, (ex) => {
-        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, this.quotesMarket)
+        const market = this.quotesMarket
+        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, market)
         return {
           buy: {
             data: this.getPriceData(buy),
@@ -311,13 +319,9 @@ export default {
         }
       })
     },
-    referencePriceData() {
-      const { data } = this.referenceExchange.getData(this.referenceMarket)
-      return this.getPriceData(data)
-    },
-    referencePrices() {
-      return this.filterExchangeList(this.referenceExchanges, ex => (
-        this.$store.getters.getReferenceExchangePrice(ex.name, this.referenceMarket)
+    cryptowatchPrices() {
+      return this.filterExchangeList(this.cryptowatchExchanges, ex => (
+        this.$store.getters.getCryptowatchExchangePrice(ex.name, this.cryptowatchMarket)
       ))
     },
     quotesPrices() {
@@ -326,11 +330,16 @@ export default {
         sell: this.$store.getters.getQuotesExchangePrice(ex.name, this.quotesMarket, 'sell'),
       }))
     },
-    referencePrice() {
-      return this.referenceExchange.getPrice(this.referenceMarket)
+    referencePriceData() {
+      let data = this.referenceExchange.getData(this.referenceExchangeMarket)
+      data = this.referenceIsQuotes ? data.buy : data.data
+      return this.getPriceData(data)
     },
-    referenceOffsetSeries() {
-      return this.referencePriceSeries.map(item => ({
+    referencePrice() {
+      return this.referenceExchange.getPrice(this.referenceExchangeMarket)
+    },
+    cryptowatchOffsetSeries() {
+      return this.cryptowatchPriceSeries.map(item => ({
         ...item,
         data: this.getOffsetData(item.data),
         name: `${item.name} Offset`,
@@ -362,8 +371,8 @@ export default {
         },
       }))
     },
-    referencePriceOffsets() {
-      return this.referencePrices.map(price => (
+    cryptowatchPriceOffsets() {
+      return this.cryptowatchPrices.map(price => (
         (price / this.referencePrice) - 1
       ))
     },
@@ -431,7 +440,7 @@ export default {
     },
     updateChart() {
       // Add price series
-      this.referencePriceSeries.forEach((item) => {
+      this.cryptowatchPriceSeries.forEach((item) => {
         this.chartOptions.series.push(item)
       })
       this.quotesPriceSeries.forEach(({ buy, sell }) => {
@@ -439,7 +448,7 @@ export default {
         this.chartOptions.series.push(sell)
       })
       // Add offset series
-      this.referenceOffsetSeries.forEach((item) => {
+      this.cryptowatchOffsetSeries.forEach((item) => {
         this.chartOptions.series.push(item)
       })
       this.quotesOffsetSeries.forEach(({ buy, sell }) => {

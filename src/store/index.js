@@ -7,12 +7,14 @@ class Exchange {
     this.label = label
     this.color = color
     this.markets = markets
+    this.source = null
   }
 }
 
-class ReferenceExchange extends Exchange {
+class CryptowatchExchange extends Exchange {
   constructor(name, label, color, markets) {
     super(name, label, color, markets)
+    this.source = 'cryptowatch'
     this.dataSets = markets.map(m => (
       { market: m, data: null, expire: null }
     ))
@@ -40,6 +42,7 @@ class ReferenceExchange extends Exchange {
 class QuotesExchange extends Exchange {
   constructor(name, label, color, markets) {
     super(name, label, color, markets)
+    this.source = 'quotes'
     this.dataSets = markets.map(m => (
       { market: m, buy: null, sell: null, expire: null }
     ))
@@ -92,20 +95,20 @@ const quotesExchanges = [
   ),
 ]
 
-const referenceExchanges = [
-  new ReferenceExchange(
+const cryptowatchExchanges = [
+  new CryptowatchExchange(
     'bitfinex', 'Bitfinex', '#C6FF00',
     ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
   ),
-  new ReferenceExchange(
+  new CryptowatchExchange(
     'bitstamp', 'Bitstamp', '#00E676',
     ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
   ),
-  new ReferenceExchange(
+  new CryptowatchExchange(
     'kraken', 'Kraken', '#651FFF',
     ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
   ),
-  new ReferenceExchange(
+  new CryptowatchExchange(
     'poloniex', 'Poloniex', '#1DE9B6',
     ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc'],
   ),
@@ -117,10 +120,10 @@ const prices = [
 
 export const state = () => ({
   quotesExchanges,
-  referenceExchanges,
+  cryptowatchExchanges,
   prices,
   exchangeOptions: [
-    ...referenceExchanges,
+    ...cryptowatchExchanges,
     ...quotesExchanges,
   ],
   marketOptions: [{
@@ -179,22 +182,22 @@ export const getters = {
     state.intervalOptions.find(x => x.label === label)
   ),
   getAllExchanges: state => () => (
-    [...state.referenceExchanges, ...state.quotesExchanges]
+    [...state.cryptowatchExchanges, ...state.quotesExchanges]
   ),
-  getReferenceExchange: state => exchange => (
-    state.referenceExchanges.find(x => x.name === exchange)
+  getCryptowatchExchange: state => exchange => (
+    state.cryptowatchExchanges.find(x => x.name === exchange)
   ),
   getQuotesExchange: state => exchange => (
     state.quotesExchanges.find(x => x.name === exchange)
   ),
-  getReferenceExchangeData: (state, getters) => (exchange, market) => (
-    getters.getReferenceExchange(exchange).getData(market)
+  getCryptowatchExchangeData: (state, getters) => (exchange, market) => (
+    getters.getCryptowatchExchange(exchange).getData(market)
   ),
   getQuotesExchangeData: (state, getters) => (exchange, market) => (
     getters.getQuotesExchange(exchange).getData(market)
   ),
-  getReferenceExchangePrice: (state, getters) => (exchange, market) => (
-    getters.getReferenceExchange(exchange).getPrice(market)
+  getCryptowatchExchangePrice: (state, getters) => (exchange, market) => (
+    getters.getCryptowatchExchange(exchange).getPrice(market)
   ),
   getQuotesExchangePrice: (state, getters) => (exchange, market, side) => (
     getters.getQuotesExchange(exchange).getPrice(market, side)
@@ -206,14 +209,14 @@ export const getters = {
 
 export const mutations = {
   setExchangeOptions(state, markets) {
-    const allExchanges = [...state.referenceExchanges, ...state.quotesExchanges]
+    const allExchanges = [...state.cryptowatchExchanges, ...state.quotesExchanges]
     state.exchangeOptions = allExchanges.filter(e => e.markets.some(m => markets.includes(m)))
   },
   updatePrice(state, { market, data }) {
     state.prices.find(x => x.name === market).set(data)
   },
-  updateReferenceExchangeData(state, { exchange, market, data }) {
-    state.referenceExchanges.find(x => x.name === exchange).setData(market, data)
+  updateCryptowatchExchangeData(state, { exchange, market, data }) {
+    state.cryptowatchExchanges.find(x => x.name === exchange).setData(market, data)
   },
   updateQuotesExchangeData(state, { exchange, market, data }) {
     state.quotesExchanges.find(x => x.name === exchange).setData(market, data)
@@ -227,13 +230,13 @@ export const actions = {
     const data = await this.$axios.$get(`price/markets/${exchange}/${market}/1d`)
     commit('updatePrice', { exchange, market, data })
   },
-  async fetchReferenceExchangeData({ getters, commit }, { exchange, market, convert }) {
-    const dataSet = getters.getReferenceExchangeData(exchange, market)
+  async fetchCryptowatchExchangeData({ getters, commit }, { exchange, market, convert }) {
+    const dataSet = getters.getCryptowatchExchangeData(exchange, market)
     if (dataSet.data && dataSet.expire < Date.now()) return
     const { result: data } = await this.$axios.$get(`cryptowatch/markets/${exchange}/${market}/ohlc`, {
       params: { convert },
     })
-    commit('updateReferenceExchangeData', { exchange, market, data })
+    commit('updateCryptowatchExchangeData', { exchange, market, data })
   },
   async fetchQuotesExchangeData({ getters, commit }, { exchange, market }) {
     const dataSet = getters.getQuotesExchangeData(exchange, market)
