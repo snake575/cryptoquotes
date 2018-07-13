@@ -49,7 +49,9 @@ class QuotesExchange extends Exchange {
   }
 
   getData(market) {
-    return this.dataSets.find(x => x.market === market)
+    const data = this.dataSets.find(x => x.market === market)
+    if (!data) return this.dataSets[0]
+    return data
   }
 
   setData(market, { buy, sell }) {
@@ -60,9 +62,9 @@ class QuotesExchange extends Exchange {
   }
 
   getPrice(market, side) {
-    let data = this.getData(market)[side]
-    if (!data) return null
-    data = data['300']
+    let data = this.getData(market)
+    if (!data || !data[side]) return null
+    data = data[side]['300']
     if (data.length === 0) return null
     return data[data.length - 1][4]
   }
@@ -240,7 +242,7 @@ export const actions = {
   },
   async fetchQuotesExchangeData({ getters, commit }, { exchange, market }) {
     const dataSet = getters.getQuotesExchangeData(exchange, market)
-    if (dataSet.buy && dataSet.sell && dataSet.expire < Date.now()) return
+    if (!dataSet || (dataSet.buy && dataSet.sell && dataSet.expire < Date.now())) return
     const [buy, sell] = await Promise.all([
       this.$axios.$get(`quotes/markets/${exchange}/${market}/buy/ohlc`),
       this.$axios.$get(`quotes/markets/${exchange}/${market}/sell/ohlc`),
