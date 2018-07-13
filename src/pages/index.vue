@@ -274,10 +274,11 @@ export default {
       return this.referenceIsQuotes ? this.quotesMarket : this.cryptowatchMarket
     },
     cryptowatchPriceSeries() {
-      return this.filterExchangeList(this.cryptowatchExchanges, (ex) => {
+      return this.filterExchangeList(this.cryptowatchExchanges, (ex, index) => {
         const market = this.cryptowatchMarket
         const { data } = this.$store.getters.getCryptowatchExchangeData(ex.name, market)
         return {
+          index,
           data: this.getPriceData(data),
           name: ex.label,
           color: ex.color,
@@ -290,10 +291,11 @@ export default {
       })
     },
     quotesPriceSeries() {
-      return this.filterExchangeList(this.quotesExchanges, (ex) => {
+      return this.filterExchangeList(this.quotesExchanges, (ex, index) => {
         const market = this.quotesMarket
         const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, market)
         return {
+          index,
           buy: {
             data: this.getPriceData(buy),
             name: `${ex.label} Buy`,
@@ -339,7 +341,8 @@ export default {
       return this.referenceExchange.getPrice(this.referenceExchangeMarket)
     },
     cryptowatchOffsetSeries() {
-      return this.cryptowatchPriceSeries.map(item => ({
+      const series = this.cryptowatchPriceSeries.filter(e => e.index > 0)
+      return series.map(item => ({
         ...item,
         data: this.getOffsetData(item.data),
         name: `${item.name} Offset`,
@@ -350,7 +353,8 @@ export default {
       }))
     },
     quotesOffsetSeries() {
-      return this.quotesPriceSeries.map(({ buy, sell }) => ({
+      const series = this.quotesPriceSeries.filter(e => e.index > 0)
+      return series.map(({ buy, sell }) => ({
         buy: {
           ...buy,
           data: this.getOffsetData(buy.data),
