@@ -2,12 +2,12 @@
 main.flex.flex-column.min-vh-100.bg-black.white-80.droid-sans-mono.f8
   header.bb.b--white-30
     .dib.br.b--white-20.pv.ph3.f7 CryptoQuotes
-    .dib.br.b--white-20.pv.ph3
-      .dib.pr2.white-40 USDCLP
-      .dib {{ price }}
+    template(v-for='(price, key) in prices')
+      .dib.pv.pl3.pr2.white-40 {{ key }}
+      .dib.pv.b--white-20.br.pr3 {{ price }}
   nuxt.flex-auto(:nuxtChildKey='$route.fullPath')
   footer.bt.b--white-30
-    .ph3.pv2.dib.br.b--white-20 {{ date }}
+    .ph3.pv2.dib.br.b--white-20 Data {{ date }}
 </template>
 
 <script>
@@ -18,8 +18,10 @@ export default {
     }
   },
   computed: {
-    price() {
-      return this.$store.getters.getPrice('usdclp').price
+    prices() {
+      return {
+        USDCLP: this.$store.getters.getPrice('usdclp').price,
+      }
     },
   },
 }
