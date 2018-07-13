@@ -94,40 +94,40 @@ export default {
     let rotateMarketInterval = store.state.intervalOptions[0]
     // Query string options
     const {
-      ex = [store.state.referenceExchanges[0].name],
-      m = marketOption.name,
-      tk = timeKeyOption.label,
-      r = rotateMarket,
-      i = rotateMarketInterval.label,
+      exchange = [store.state.referenceExchanges[0].name],
+      market = marketOption.name,
+      timekey = timeKeyOption.label,
+      rotate = rotateMarket,
+      interval = rotateMarketInterval.label,
     } = query
     // Set exchanges from query
     let {
       referenceExchanges,
       quotesExchanges,
     } = store.state
-    referenceExchanges = referenceExchanges.filter(e => ex.includes(e.name))
-    quotesExchanges = quotesExchanges.filter(e => ex.includes(e.name))
+    referenceExchanges = referenceExchanges.filter(e => exchange.includes(e.name))
+    quotesExchanges = quotesExchanges.filter(e => exchange.includes(e.name))
     const allExchanges = [...referenceExchanges, ...quotesExchanges]
-    const exchangesList = [...new Set(ex)]
+    const exchangesList = [...new Set(exchange)]
     const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
 
     // Set options from query string
-    marketOption = store.getters.getMarketOption(m)
-    timeKeyOption = store.getters.getTimeKeyOption(tk)
-    rotateMarket = JSON.parse(r)
-    rotateMarketInterval = store.getters.getIntervalOption(i)
+    marketOption = store.getters.getMarketOption(market)
+    timeKeyOption = store.getters.getTimeKeyOption(timekey)
+    rotateMarket = JSON.parse(rotate)
+    rotateMarketInterval = store.getters.getIntervalOption(interval)
     // Fetch market data
     await Promise.all([
-      ...referenceExchanges.map(exchange => (
+      ...referenceExchanges.map(ex => (
         store.dispatch('fetchReferenceExchangeData', {
-          exchange: exchange.name,
+          exchange: ex.name,
           market: marketOption.markets[0],
           convert: marketOption.convert,
         })
       )),
-      ...quotesExchanges.map(exchange => (
+      ...quotesExchanges.map(ex => (
         store.dispatch('fetchQuotesExchangeData', {
-          exchange: exchange.name,
+          exchange: ex.name,
           market: marketOption.markets[1],
         })
       )),
@@ -244,12 +244,12 @@ export default {
   computed: {
     query() {
       return {
-        c: this.marketOption.convert,
-        m: this.marketOption.name,
-        tk: this.timeKeyOption.label,
-        r: this.rotateMarket,
-        i: this.rotateMarketInterval.label,
-        ex: this.exchangesList,
+        exchange: this.exchangesList,
+        convert: this.marketOption.convert,
+        market: this.marketOption.name,
+        timekey: this.timeKeyOption.label,
+        rotate: this.rotateMarket,
+        interval: this.rotateMarketInterval.label,
       }
     },
     referenceMarket() {
