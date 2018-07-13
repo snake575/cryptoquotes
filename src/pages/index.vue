@@ -244,15 +244,19 @@ export default {
   computed: {
     query() {
       return {
-        rm: this.marketOption.markets[0],
         c: this.marketOption.convert,
         m: this.marketOption.name,
-        qm: this.marketOption.markets[1],
         tk: this.timeKeyOption.label,
         r: this.rotateMarket,
         i: this.rotateMarketInterval.label,
         ex: this.exchangesList,
       }
+    },
+    referenceMarket() {
+      return this.marketOption.markets[0]
+    },
+    quotesMarket() {
+      return this.marketOption.markets[1]
     },
     referenceExchanges() {
       return this.filterExchanges(this.$store.state.referenceExchanges)
@@ -265,7 +269,7 @@ export default {
     },
     referencePriceSeries() {
       return this.filterExchangeList(this.referenceExchanges, (ex) => {
-        const { data } = this.$store.getters.getReferenceExchangeData(ex.name, this.query.rm)
+        const { data } = this.$store.getters.getReferenceExchangeData(ex.name, this.referenceMarket)
         return {
           data: this.getPriceData(data),
           name: ex.label,
@@ -280,7 +284,7 @@ export default {
     },
     quotesPriceSeries() {
       return this.filterExchangeList(this.quotesExchanges, (ex) => {
-        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, this.query.qm)
+        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, this.quotesMarket)
         return {
           buy: {
             data: this.getPriceData(buy),
@@ -308,22 +312,22 @@ export default {
       })
     },
     referencePriceData() {
-      const { data } = this.referenceExchange.getData(this.query.rm)
+      const { data } = this.referenceExchange.getData(this.referenceMarket)
       return this.getPriceData(data)
     },
     referencePrices() {
       return this.filterExchangeList(this.referenceExchanges, ex => (
-        this.$store.getters.getReferenceExchangePrice(ex.name, this.query.rm)
+        this.$store.getters.getReferenceExchangePrice(ex.name, this.referenceMarket)
       ))
     },
     quotesPrices() {
       return this.filterExchangeList(this.quotesExchanges, ex => ({
-        buy: this.$store.getters.getQuotesExchangePrice(ex.name, this.query.qm, 'buy'),
-        sell: this.$store.getters.getQuotesExchangePrice(ex.name, this.query.qm, 'sell'),
+        buy: this.$store.getters.getQuotesExchangePrice(ex.name, this.quotesMarket, 'buy'),
+        sell: this.$store.getters.getQuotesExchangePrice(ex.name, this.quotesMarket, 'sell'),
       }))
     },
     referencePrice() {
-      return this.referenceExchange.getPrice(this.query.rm)
+      return this.referenceExchange.getPrice(this.referenceMarket)
     },
     referenceOffsetSeries() {
       return this.referencePriceSeries.map(item => ({
