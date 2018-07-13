@@ -420,6 +420,7 @@ export default {
     getPriceData(dataSet) {
       if (!dataSet) return []
       const data = dataSet[this.timeKeyOption.seconds]
+      if (data.length === 0) return []
       return data.map(i => [i[0] * 1000, i[4]])
     },
     getOffsetData(quotes) {

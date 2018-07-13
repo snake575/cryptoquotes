@@ -32,6 +32,7 @@ class ReferenceExchange extends Exchange {
     let { data } = this.getData(market)
     if (!data) return null
     data = data['60']
+    if (data.length === 0) return null
     return data[data.length - 1][4]
   }
 }
@@ -59,6 +60,7 @@ class QuotesExchange extends Exchange {
     let data = this.getData(market)[side]
     if (!data) return null
     data = data['300']
+    if (data.length === 0) return null
     return data[data.length - 1][4]
   }
 }
