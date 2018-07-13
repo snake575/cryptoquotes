@@ -100,23 +100,24 @@ export default {
       rotate = rotateMarket,
       interval = rotateMarketInterval.label,
     } = query
-    // Set exchanges from query
-    let {
-      referenceExchanges,
-      quotesExchanges,
-    } = store.state
+    // Set market option
+    marketOption = store.getters.getMarketOption(market)
+    // Set time key option
+    timeKeyOption = store.getters.getTimeKeyOption(timekey)
+    // Set rotation option
+    rotateMarket = JSON.parse(rotate)
+    rotateMarketInterval = store.getters.getIntervalOption(interval)
+    // Set exchange options
+    const { markets } = marketOption
+    store.commit('setExchangeOptions', markets)
+    // Set exchanges
+    let { referenceExchanges, quotesExchanges } = store.state
     referenceExchanges = referenceExchanges.filter(e => exchange.includes(e.name))
     quotesExchanges = quotesExchanges.filter(e => exchange.includes(e.name))
     const allExchanges = [...referenceExchanges, ...quotesExchanges]
     const exchangesList = [...new Set(exchange)]
     const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
-
-    // Set options from query string
-    marketOption = store.getters.getMarketOption(market)
-    timeKeyOption = store.getters.getTimeKeyOption(timekey)
-    rotateMarket = JSON.parse(rotate)
-    rotateMarketInterval = store.getters.getIntervalOption(interval)
-    // Fetch market data
+    // Fetch exchanges data
     await Promise.all([
       ...referenceExchanges.map(ex => (
         store.dispatch('fetchReferenceExchangeData', {
@@ -138,12 +139,12 @@ export default {
     ])
     // Return data
     return {
-      exchanges,
-      exchangesList,
       marketOption,
       timeKeyOption,
       rotateMarket,
       rotateMarketInterval,
+      exchanges,
+      exchangesList,
     }
   },
   filters: {
@@ -168,9 +169,8 @@ export default {
     const {
       marketOptions,
       timeKeyOptions,
-      referenceExchanges,
-      quotesExchanges,
       intervalOptions,
+      exchangeOptions,
     } = this.$store.state
     return {
       // Icon
@@ -192,7 +192,7 @@ export default {
         labelBy: 'label',
         trackBy: 'name',
         placeholder: 'Select a exchange',
-        options: [...referenceExchanges, ...quotesExchanges],
+        options: exchangeOptions,
         hasClose: true,
       },
       // Time key

@@ -79,37 +79,47 @@ class Price {
   }
 }
 
+const quotesExchanges = [
+  new QuotesExchange(
+    'surbtc', 'Buda', ['#00B0FF', '#40C4FF'],
+    ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc'],
+  ),
+  new QuotesExchange(
+    'cryptomkt', 'CryptoMKT', ['#3D5AFE', '#536DFE'],
+    ['btcclp', 'ethclp'],
+  ),
+]
+
+const referenceExchanges = [
+  new ReferenceExchange(
+    'bitfinex', 'Bitfinex', '#C6FF00',
+    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+  ),
+  new ReferenceExchange(
+    'bitstamp', 'Bitstamp', '#00E676',
+    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+  ),
+  new ReferenceExchange(
+    'kraken', 'Kraken', '#651FFF',
+    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+  ),
+  new ReferenceExchange(
+    'poloniex', 'Poloniex', '#1DE9B6',
+    ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc'],
+  ),
+]
+
+const prices = [
+  new Price('usdclp', 'USDCLP'),
+]
+
 export const state = () => ({
-  quotesExchanges: [
-    new QuotesExchange(
-      'surbtc', 'Buda', ['#00B0FF', '#40C4FF'],
-      ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc'],
-    ),
-    new QuotesExchange(
-      'cryptomkt', 'CryptoMKT', ['#3D5AFE', '#536DFE'],
-      ['btcclp', 'ethclp'],
-    ),
-  ],
-  referenceExchanges: [
-    new ReferenceExchange(
-      'bitfinex', 'Bitfinex', '#C6FF00',
-      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
-    ),
-    new ReferenceExchange(
-      'bitstamp', 'Bitstamp', '#00E676',
-      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
-    ),
-    new ReferenceExchange(
-      'kraken', 'Kraken', '#651FFF',
-      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
-    ),
-    new ReferenceExchange(
-      'poloniex', 'Poloniex', '#1DE9B6',
-      ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc'],
-    ),
-  ],
-  prices: [
-    new Price('usdclp', 'USDCLP'),
+  quotesExchanges,
+  referenceExchanges,
+  prices,
+  exchangeOptions: [
+    ...referenceExchanges,
+    ...quotesExchanges,
   ],
   marketOptions: [{
     label: 'BTCUSD(CLP)',
@@ -166,6 +176,9 @@ export const getters = {
   getIntervalOption: state => label => (
     state.intervalOptions.find(x => x.label === label)
   ),
+  getAllExchanges: state => () => (
+    [...state.referenceExchanges, ...state.quotesExchanges]
+  ),
   getReferenceExchange: state => exchange => (
     state.referenceExchanges.find(x => x.name === exchange)
   ),
@@ -190,6 +203,10 @@ export const getters = {
 }
 
 export const mutations = {
+  setExchangeOptions(state, markets) {
+    const allExchanges = [...state.referenceExchanges, ...state.quotesExchanges]
+    state.exchangeOptions = allExchanges.filter(e => e.markets.some(m => markets.includes(m)))
+  },
   updatePrice(state, { market, data }) {
     state.prices.find(x => x.name === market).set(data)
   },
