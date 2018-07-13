@@ -107,8 +107,9 @@ export default {
     } = store.state
     referenceExchanges = referenceExchanges.filter(e => ex.includes(e.name))
     quotesExchanges = quotesExchanges.filter(e => ex.includes(e.name))
-    const exchanges = [...referenceExchanges, ...quotesExchanges]
+    const allExchanges = [...referenceExchanges, ...quotesExchanges]
     const exchangesList = [...new Set(ex)]
+    const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
 
     // Set options from query string
     marketOption = store.getters.getMarketOption(m)
