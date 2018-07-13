@@ -4,17 +4,20 @@
     .pt2.label.white-40.f8 {{ label }} {{ ref }}
     .flex-auto.tr(v-if='hasClose' @click='close')
       img.icon(:src='closeIcon')
-  v-multiselect(
-    v-model='lazyValue'
-    :options='options'
-    :placeholder='placeholder'
-    :label='labelBy'
-    :trackBy='trackBy'
-    :searchable='false'
-    :show-labels='false'
-    :allow-empty='false'
-    @input='input'
-  )
+  .dt
+    .pr2.pb1.dtc.v-mid(v-if='color')
+      span.dot(:style="{ 'background-color': color }")
+    v-multiselect(
+      v-model='lazyValue'
+      :options='options'
+      :placeholder='placeholder'
+      :label='labelBy'
+      :trackBy='trackBy'
+      :searchable='false'
+      :show-labels='false'
+      :allow-empty='false'
+      @input='input'
+    )
 </template>
 
 <script>
@@ -29,6 +32,11 @@ export default {
   computed: {
     ref() {
       return this.index === 0 ? '(Ref.)' : null
+    },
+    color() {
+      if (!this.value) return null
+      const { color } = this.value
+      return Array.isArray(color) ? color[0] : color
     },
   },
   methods: {
@@ -50,5 +58,11 @@ export default {
 }
 .icon:hover {
   filter: invert(0.9)
+}
+.dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
 }
 </style>

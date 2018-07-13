@@ -79,7 +79,9 @@ export default {
   },
   tooltip: {
     backgroundColor: 'rgba(0, 0, 0, 0.80)',
+    borderColor: palette.contrastBorder,
     borderRadius: 0,
+    padding: 12,
     style: {
       color: palette.contrastText,
     },

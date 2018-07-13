@@ -2,16 +2,17 @@
 import { endOfDay, getTime } from 'date-fns'
 
 class Exchange {
-  constructor(name, label, markets) {
+  constructor(name, label, color, markets) {
     this.name = name
     this.label = label
+    this.color = color
     this.markets = markets
   }
 }
 
 class ReferenceExchange extends Exchange {
-  constructor(name, label, markets) {
-    super(name, label, markets)
+  constructor(name, label, color, markets) {
+    super(name, label, color, markets)
     this.dataSets = markets.map(m => (
       { market: m, data: null, expire: null }
     ))
@@ -36,8 +37,8 @@ class ReferenceExchange extends Exchange {
 }
 
 class QuotesExchange extends Exchange {
-  constructor(name, label, markets) {
-    super(name, label, markets)
+  constructor(name, label, color, markets) {
+    super(name, label, color, markets)
     this.dataSets = markets.map(m => (
       { market: m, buy: null, sell: null, expire: null }
     ))
@@ -80,14 +81,32 @@ class Price {
 
 export const state = () => ({
   quotesExchanges: [
-    new QuotesExchange('surbtc', 'Buda', ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc']),
-    new QuotesExchange('cryptomkt', 'CryptoMKT', ['btcclp', 'ethclp']),
+    new QuotesExchange(
+      'surbtc', 'Buda', ['#00B0FF', '#40C4FF'],
+      ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc'],
+    ),
+    new QuotesExchange(
+      'cryptomkt', 'CryptoMKT', ['#3D5AFE', '#536DFE'],
+      ['btcclp', 'ethclp'],
+    ),
   ],
   referenceExchanges: [
-    new ReferenceExchange('bitfinex', 'Bitfinex', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
-    new ReferenceExchange('bitstamp', 'Bitstamp', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
-    new ReferenceExchange('kraken', 'Kraken', ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc']),
-    new ReferenceExchange('poloniex', 'Poloniex', ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc']),
+    new ReferenceExchange(
+      'bitfinex', 'Bitfinex', '#C6FF00',
+      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ),
+    new ReferenceExchange(
+      'bitstamp', 'Bitstamp', '#00E676',
+      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ),
+    new ReferenceExchange(
+      'kraken', 'Kraken', '#651FFF',
+      ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ),
+    new ReferenceExchange(
+      'poloniex', 'Poloniex', '#1DE9B6',
+      ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc'],
+    ),
   ],
   prices: [
     new Price('usdclp', 'USDCLP'),

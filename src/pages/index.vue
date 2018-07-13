@@ -263,12 +263,12 @@ export default {
       return this.exchanges[0]
     },
     referencePriceSeries() {
-      return this.filterExchangeList(this.referenceExchanges, (ex, index) => {
+      return this.filterExchangeList(this.referenceExchanges, (ex) => {
         const { data } = this.$store.getters.getReferenceExchangeData(ex.name, this.query.rm)
         return {
           data: this.getPriceData(data),
           name: ex.label,
-          colorIndex: index,
+          color: ex.color,
           type: 'line',
           marker: {
             symbol: 'circle',
@@ -278,13 +278,13 @@ export default {
       })
     },
     quotesPriceSeries() {
-      return this.filterExchangeList(this.quotesExchanges, (ex, index) => {
+      return this.filterExchangeList(this.quotesExchanges, (ex) => {
         const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, this.query.qm)
         return {
           buy: {
             data: this.getPriceData(buy),
             name: `${ex.label} Buy`,
-            colorIndex: index,
+            color: ex.color[0],
             type: 'line',
             dashStyle: 'ShortDash',
             marker: {
@@ -295,7 +295,7 @@ export default {
           sell: {
             data: this.getPriceData(sell),
             name: `${ex.label} Sell`,
-            colorIndex: index,
+            color: ex.color[1],
             type: 'line',
             dashStyle: 'ShortDash',
             marker: {

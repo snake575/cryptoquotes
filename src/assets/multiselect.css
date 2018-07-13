@@ -2,6 +2,7 @@
   background-color: black;
   color: inherit;
   min-height: 24px;
+  min-width: 88px;
 }
 
 .multiselect__tags {
