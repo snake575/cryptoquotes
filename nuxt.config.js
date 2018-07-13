@@ -77,7 +77,7 @@ module.exports = {
   // Nuxt Axios module configuration
   // https://github.com/nuxt-community/axios-module#options
   axios: {
-    baseURL: 'https://7vb7k3j4rb.execute-api.us-east-1.amazonaws.com/dev/',
+    baseURL: 'https://ljkzv3zs5h.execute-api.us-east-1.amazonaws.com/production/',
   },
   // Nuxt Google Analytics module configuration
   // https://github.com/nuxt-community/analytics-module#setup
