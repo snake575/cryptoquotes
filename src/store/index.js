@@ -89,7 +89,7 @@ class Price {
 const quotesExchanges = [
   new QuotesExchange(
     'surbtc', 'Buda', ['#00B0FF', '#40C4FF'],
-    ['btcclp', 'ethclp', 'bchclp', 'ethbtc', 'bchbtc'],
+    ['btcclp', 'bchclp', 'bchbtc', 'ethclp', 'ethbtc', 'ltcclp', 'ltcbtc'],
   ),
   new QuotesExchange(
     'cryptomkt', 'CryptoMKT', ['#FF3D00', '#FF6E40'],
@@ -100,19 +100,19 @@ const quotesExchanges = [
 const cryptowatchExchanges = [
   new CryptowatchExchange(
     'bitfinex', 'Bitfinex', '#C6FF00',
-    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ['btcusd', 'bchusd', 'bchbtc', 'ethusd', 'ethbtc', 'ltcusd', 'ltcbtc'],
   ),
   new CryptowatchExchange(
     'bitstamp', 'Bitstamp', '#00E676',
-    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ['btcusd', 'bchusd', 'bchbtc', 'ethusd', 'ethbtc', 'ltcusd', 'ltcbtc'],
   ),
   new CryptowatchExchange(
     'kraken', 'Kraken', '#651FFF',
-    ['btcusd', 'ethusd', 'bchusd', 'ethbtc', 'bchbtc'],
+    ['btcusd', 'bchusd', 'bchbtc', 'ethusd', 'ethbtc', 'ltcusd', 'ltcbtc'],
   ),
   new CryptowatchExchange(
     'poloniex', 'Poloniex', '#1DE9B6',
-    ['btcusdt', 'ethusdt', 'bchusdt', 'ethbtc', 'bchbtc'],
+    ['btcusdt', 'bchusdt', 'bchbtc', 'ethusdt', 'ethbtc', 'ltcusdt', 'ltcbtc'],
   ),
 ]
 
@@ -141,6 +141,11 @@ export const state = () => ({
     currencies: ['eth', 'usd'],
     convert: 'clp',
   }, {
+    label: 'LTCUSD(CLP)',
+    name: 'ltcusd',
+    markets: ['ltcusd', 'ltcbtc'],
+    currencies: ['ltc', 'usd'],
+  }, {
     label: 'BCHUSD(CLP)',
     name: 'bchusdclp',
     markets: ['bchusd', 'bchclp'],
@@ -151,6 +156,11 @@ export const state = () => ({
     name: 'ethbtc',
     markets: ['ethbtc', 'ethbtc'],
     currencies: ['eth', 'btc'],
+  }, {
+    label: 'LTCBTC',
+    name: 'ltcbtc',
+    markets: ['ltcbtc', 'ltcbtc'],
+    currencies: ['ltc', 'btc'],
   }, {
     label: 'BCHBTC',
     name: 'bchbtc',
