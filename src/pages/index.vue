@@ -287,6 +287,8 @@ export default {
             symbol: 'circle',
           },
           yAxis: 0,
+          zIndex: -index,
+          opacity: 0.25,
         }
       })
     },
@@ -301,22 +303,26 @@ export default {
             name: `${ex.label} Buy`,
             color: ex.color[0],
             type: 'line',
-            dashStyle: 'ShortDash',
+            lineWidth: 1.5,
+            dashStyle: 'Dash',
             marker: {
               symbol: 'triangle',
             },
             yAxis: 0,
+            zIndex: -index,
           },
           sell: {
             data: this.getPriceData(sell),
             name: `${ex.label} Sell`,
             color: ex.color[1],
             type: 'line',
+            lineWidth: 1.5,
             dashStyle: 'ShortDash',
             marker: {
               symbol: 'triangle-down',
             },
             yAxis: 0,
+            zIndex: -index,
           },
         }
       })
