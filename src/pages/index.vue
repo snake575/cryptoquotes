@@ -13,6 +13,18 @@
       v-model='quotesExchangeOption'
       v-bind='quotesExchangeProps'
     )
+    template(v-for='(option, index) in exchanges')
+      multiselect.dib.bb.br.b--white-20.min-width-150(
+        :key='(option ? option.name : null)'
+        :index='index'
+        v-model='exchanges[index]'
+        v-bind='exchangeProps'
+        @close='removeExchange(index)'
+      )
+    a.inline-flex.items-center.bb.br.b--white-20.no-underline.bg-animate.hover-bg-gray.pa2(
+      @click='addExchange()'
+    )
+      img.icon(:src='plusIcon')
     multiselect.dib.bb.br.b--white-20(
       v-model='timeKeyOption'
       v-bind='timeKeyProps'
@@ -53,33 +65,34 @@
               .dib.pr2 {{ quotesSellPrice | number }}
               .dib.white-40.pr2 {{ offsetSellPrice | percent }}
               .dib.white-40 (Sell)
+        template(v-for='(exchange, index) in referenceExchanges')
+          .dib.pr2.white-40
+            | {{ exchange.label }}
+            | {{ marketOption.currencies[1] | upper }}({{ marketOption.convert | upper }})
+          .dib(:class="[ index > 0 ? 'pr1' : 'pr3' ]") {{ referencePrices[index] | number }}
+          .dib.white-40.pr3(v-if='index > 0') {{ referencePriceOffsets[index] | percent }}
+        template(v-for='(exchange, index) in quotesExchanges')
+          .flex.items-center
+            .dib.pr2.white-40 {{ exchange.label }} {{ marketOption.convert | upper }}
+            .dib.pr3
+              div
+                .dib.pr1 {{ quotesPrices[index].buy | number }}
+                .dib.white-40.pr1 {{ quotesPriceOffsets[index].buy | percent }}
+                .dib.white-40 (Buy)
+              .pt1
+                .dib.pr1 {{ quotesPrices[index].sell | number }}
+                .dib.white-40.pr1 {{ quotesPriceOffsets[index].sell | percent }}
+                .dib.white-40 (Sell)
   .flex.flex-auto
     highstock.flex-auto.br.b--white-20(
       id='chart'
       :options='chartOptions'
     )
-    //- .w-auto
-    //-   .tc.pv2.ph3.bb.b--white-20 Ref Markets
-    //-   .pa2.bb.b--white-20
-    //-     .pb2.white-40 Bitfinex BTCUSD(CLP)
-    //-     .flex.justify-between
-    //-       div 16466
-    //-       div 9000123
-    //-   .tc.pv2.ph3.bb.b--white-20 Quote Markets
-    //-   .pa2.bb.b--white-20
-    //-     .pb2.white-40 SurBTC BTCCLP
-    //-     .flex.justify-between
-    //-       div 9000123
-    //-       div 10000123
-    //-   .pa2.bb.b--white-20
-    //-     .pb2.white-40 SurBTC ETHCLP
-    //-     .flex.justify-between
-    //-       div 400123
-    //-       div 500123
 </template>
 
 <script>
 import Multiselect from '~/components/Multiselect'
+import plusIcon from '~/assets/plus.svg'
 
 // Range selector buttons
 const buttons = [
@@ -107,6 +120,7 @@ export default {
     let rotateMarketInterval = store.state.intervalOptions[0]
     // Query string options
     const {
+      ex = [store.state.referenceExchanges[0].name],
       re = referenceExchangeOption.name,
       m = marketOption.name,
       qe = quotesExchangeOption.name,
@@ -114,6 +128,16 @@ export default {
       r = rotateMarket,
       i = rotateMarketInterval.label,
     } = query
+    // Set exchanges from query
+    let {
+      referenceExchanges,
+      quotesExchanges,
+    } = store.state
+    referenceExchanges = referenceExchanges.filter(e => ex.includes(e.name))
+    quotesExchanges = quotesExchanges.filter(e => ex.includes(e.name))
+    const exchanges = [...referenceExchanges, ...quotesExchanges]
+    const exchangesList = [...new Set(ex)]
+
     // Set options from query string
     referenceExchangeOption = store.getters.getReferenceExchange(re)
     quotesExchangeOption = store.getters.getQuotesExchange(qe)
@@ -123,6 +147,20 @@ export default {
     rotateMarketInterval = store.getters.getIntervalOption(i)
     // Fetch market data
     await Promise.all([
+      ...referenceExchanges.map(exchange => (
+        store.dispatch('fetchReferenceExchangeData', {
+          exchange: exchange.name,
+          market: marketOption.markets[0],
+          convert: marketOption.convert,
+        })
+      )),
+      ...quotesExchanges.map(exchange => (
+        store.dispatch('fetchQuotesExchangeData', {
+          exchange: exchange.name,
+          market: marketOption.markets[1],
+        })
+      )),
+
       store.dispatch('fetchReferenceExchangeData', {
         exchange: referenceExchangeOption.name,
         market: marketOption.markets[0],
@@ -139,6 +177,8 @@ export default {
     ])
     // Return data
     return {
+      exchanges,
+      exchangesList,
       referenceExchangeOption,
       quotesExchangeOption,
       marketOption,
@@ -174,6 +214,8 @@ export default {
       intervalOptions,
     } = this.$store.state
     return {
+      // Icon
+      plusIcon,
       // Market
       marketProps: {
         label: 'Market',
@@ -185,6 +227,15 @@ export default {
       // Market rotation
       intervalOptions,
       rotateMarketIntervalId: null,
+      // Exchanges
+      exchangeProps: {
+        label: 'Exchange',
+        labelBy: 'label',
+        trackBy: 'name',
+        placeholder: 'Select a exchange',
+        options: [...referenceExchanges, ...quotesExchanges],
+        hasClose: true,
+      },
       // Reference market
       referenceExchangeProps: {
         label: 'Reference',
@@ -295,7 +346,58 @@ export default {
         tk: this.timeKeyOption.label,
         r: this.rotateMarket,
         i: this.rotateMarketInterval.label,
+        ex: this.exchangesList,
       }
+    },
+    referenceExchanges() {
+      return this.filterExchanges(this.$store.state.referenceExchanges)
+    },
+    quotesExchanges() {
+      return this.filterExchanges(this.$store.state.quotesExchanges)
+    },
+    referencePriceSeries() {
+      return this.filterExchangeList(this.referenceExchanges, (ex, index) => {
+        const { data } = this.$store.getters.getReferenceExchangeData(ex.name, this.query.rm)
+        return {
+          data: this.getPriceData(data),
+          name: ex.label,
+          colorIndex: index,
+          type: 'line',
+          marker: {
+            symbol: 'circle',
+          },
+          yAxis: 0,
+        }
+      })
+    },
+    quotesPriceSeries() {
+      return this.filterExchangeList(this.quotesExchanges, (ex, index) => {
+        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, this.query.qm)
+        return {
+          buy: {
+            data: this.getPriceData(buy),
+            name: `${ex.label} Buy`,
+            colorIndex: index,
+            type: 'line',
+            dashStyle: 'ShortDash',
+            marker: {
+              symbol: 'triangle',
+            },
+            yAxis: 0,
+          },
+          sell: {
+            data: this.getPriceData(sell),
+            name: `${ex.label} Sell`,
+            colorIndex: index,
+            type: 'line',
+            dashStyle: 'ShortDash',
+            marker: {
+              symbol: 'triangle-down',
+            },
+            yAxis: 0,
+          },
+        }
+      })
     },
     referenceExchangeData() {
       const { data } = this.$store.getters.getReferenceExchangeData(this.query.re, this.query.rm)
@@ -309,6 +411,17 @@ export default {
       const { sell } = this.$store.getters.getQuotesExchangeData(this.query.qe, this.query.qm)
       return this.getPriceData(sell)
     },
+    referencePrices() {
+      return this.filterExchangeList(this.referenceExchanges, ex => (
+        this.$store.getters.getReferenceExchangePrice(ex.name, this.query.rm)
+      ))
+    },
+    quotesPrices() {
+      return this.filterExchangeList(this.quotesExchanges, ex => ({
+        buy: this.$store.getters.getQuotesExchangePrice(ex.name, this.query.qm, 'buy'),
+        sell: this.$store.getters.getQuotesExchangePrice(ex.name, this.query.qm, 'sell'),
+      }))
+    },
     referenceExchangePrice() {
       return this.$store.getters.getReferenceExchangePrice(this.query.re, this.query.rm)
     },
@@ -318,11 +431,55 @@ export default {
     quotesSellPrice() {
       return this.$store.getters.getQuotesExchangePrice(this.query.qe, this.query.qm, 'sell')
     },
+    referenceOffsetSeries() {
+      return this.referencePriceSeries.map(item => ({
+        ...item,
+        data: this.getOffsetData(item.data),
+        name: `${item.name} Offset`,
+        yAxis: 1,
+        tooltip: {
+          valueSuffix: '%',
+        },
+      }))
+    },
+    quotesOffsetSeries() {
+      return this.quotesPriceSeries.map(({ buy, sell }) => ({
+        buy: {
+          ...buy,
+          data: this.getOffsetData(buy.data),
+          name: `${buy.name} Offset`,
+          yAxis: 1,
+          tooltip: {
+            valueSuffix: '%',
+          },
+        },
+        sell: {
+          ...sell,
+          data: this.getOffsetData(sell.data),
+          name: `${sell.name} Offset`,
+          yAxis: 1,
+          tooltip: {
+            valueSuffix: '%',
+          },
+        },
+      }))
+    },
     offsetBuyData() {
       return this.getOffsetData(this.quotesBuyData)
     },
     offsetSellData() {
       return this.getOffsetData(this.quotesSellData)
+    },
+    referencePriceOffsets() {
+      return this.referencePrices.map(price => (
+        (price / this.referenceExchangePrice) - 1
+      ))
+    },
+    quotesPriceOffsets() {
+      return this.quotesPrices.map(({ buy, sell }) => ({
+        buy: (buy / this.referenceExchangePrice) - 1,
+        sell: (sell / this.referenceExchangePrice) - 1,
+      }))
     },
     offsetBuyPrice() {
       return (this.quotesBuyPrice / this.referenceExchangePrice) - 1
@@ -342,6 +499,16 @@ export default {
     // },
   },
   watch: {
+    exchanges(value) {
+      value.filter(e => !!e).forEach((e, index) => {
+        if (this.exchangesList[index] !== e.name) {
+          this.exchangesList.splice(index, 1, e.name)
+        }
+      })
+    },
+    exchangesList() {
+      this.reload()
+    },
     referenceExchangeOption() {
       this.reload()
     },
@@ -363,6 +530,23 @@ export default {
     this.updateMarketRotation()
   },
   methods: {
+    addExchange(ex) {
+      this.exchanges.push(ex)
+    },
+    removeExchange(index) {
+      this.exchanges.splice(index, 1)
+      this.exchangesList.splice(index, 1)
+    },
+    filterExchanges(exchanges) {
+      return exchanges.filter(e => this.exchangesList.includes(e.name))
+    },
+    filterExchangeList(exchanges, callback) {
+      return this.exchangesList.map((name, index) => {
+        const ex = exchanges.find(e => e.name === name)
+        if (!ex) return null
+        return callback(ex, index)
+      }).filter(ex => !!ex)
+    },
     getPriceData(dataSet) {
       if (!dataSet) return []
       const data = dataSet[this.timeKeyOption.seconds]
@@ -375,11 +559,27 @@ export default {
       })
     },
     updateChart() {
-      this.chartOptions.series[0].data = this.referenceExchangeData
-      this.chartOptions.series[1].data = this.quotesBuyData
-      this.chartOptions.series[2].data = this.quotesSellData
-      this.chartOptions.series[3].data = this.offsetBuyData
-      this.chartOptions.series[4].data = this.offsetSellData
+      // Add price series
+      this.referencePriceSeries.forEach((item) => {
+        this.chartOptions.series.push(item)
+      })
+      this.quotesPriceSeries.forEach(({ buy, sell }) => {
+        this.chartOptions.series.push(buy)
+        this.chartOptions.series.push(sell)
+      })
+      // Add offset series
+      this.referenceOffsetSeries.forEach((item) => {
+        this.chartOptions.series.push(item)
+      })
+      this.quotesOffsetSeries.forEach(({ buy, sell }) => {
+        this.chartOptions.series.push(buy)
+        this.chartOptions.series.push(sell)
+      })
+      // this.chartOptions.series[0].data = this.referenceExchangeData
+      // this.chartOptions.series[1].data = this.quotesBuyData
+      // this.chartOptions.series[2].data = this.quotesSellData
+      // this.chartOptions.series[3].data = this.offsetBuyData
+      // this.chartOptions.series[4].data = this.offsetSellData
       this.chartOptions.rangeSelector.selected = this.timeKeyOption.range
     },
     updateMarketRotation() {
@@ -409,5 +609,10 @@ export default {
   padding-right: 8px;
   padding-top: 4px;
   width: 100%;
+}
+.icon {
+  height: 16px;
+  filter: invert(0.8);
+  padding: 6px;
 }
 </style>
