@@ -142,9 +142,10 @@ export const state = () => ({
     convert: 'clp',
   }, {
     label: 'LTCUSD(CLP)',
-    name: 'ltcusd',
-    markets: ['ltcusd', 'ltcbtc'],
+    name: 'ltcusdclp',
+    markets: ['ltcusd', 'ltcclp'],
     currencies: ['ltc', 'usd'],
+    convert: 'clp',
   }, {
     label: 'BCHUSD(CLP)',
     name: 'bchusdclp',
