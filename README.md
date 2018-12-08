@@ -1,21 +1,23 @@
-# cryptoquotes
+# Crypto-Quotes
 
-> CryptoQuotes Nuxt.js project
+> A small app that compares historical buy-sell quotes on CLP :chile: from many cryptocurrency exchanges :chart_with_upwards_trend:
+
+![Crypto-Quotes](https://user-images.githubusercontent.com/4157289/49690442-ea5f5e80-fb0f-11e8-9bfc-c594a588b3e9.png)
 
 ## Build Setup
 
 ``` bash
-# install dependencies
+# Install dependencies
 $ yarn install
 
-# serve with hot reload at localhost:3000
-$ yarn run dev
+# Serve with hot reload at localhost:3000
+$ yarn dev
 
-# build for production and launch server
-$ yarn run build
+# Build for production and launch server
+$ yarn build
 $ yarn start
 
-# generate static project
+# Generate static project
 $ yarn run generate
 ```
 
