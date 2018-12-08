@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 export default {
   // Nuxt mode
   // https://nuxtjs.org/api/configuration-mode
@@ -77,11 +81,11 @@ export default {
   // Nuxt Axios module configuration
   // https://github.com/nuxt-community/axios-module#options
   axios: {
-    baseURL: 'https://bsf9jm9c8a.execute-api.us-east-1.amazonaws.com/production/',
+    baseURL: process.env.API_URL,
   },
   // Nuxt Google Analytics module configuration
   // https://github.com/nuxt-community/analytics-module#setup
   'google-analytics': {
-    id: 'UA-115471070-1',
+    id: process.env.ANALYTICS_ID,
   },
 }
