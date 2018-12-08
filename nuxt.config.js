@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // Nuxt mode
   // https://nuxtjs.org/api/configuration-mode
   mode: 'spa',
