@@ -1,8 +1,8 @@
-# Crypto-Quotes
+# CryptoQuotes
 
 > A small app that compares historical buy-sell quotes on CLP :chile: from many cryptocurrency exchanges :chart_with_upwards_trend:
 
-![Crypto-Quotes](https://user-images.githubusercontent.com/4157289/49690442-ea5f5e80-fb0f-11e8-9bfc-c594a588b3e9.png)
+![CryptoQuotes](https://user-images.githubusercontent.com/4157289/49690442-ea5f5e80-fb0f-11e8-9bfc-c594a588b3e9.png)
 
 ## Build Setup
 
