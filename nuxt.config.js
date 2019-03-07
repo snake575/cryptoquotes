@@ -37,7 +37,9 @@ export default {
   plugins: [
     '~/plugins/highcharts.js',
     '~/plugins/multiselect.js',
+    '~/plugins/qriously.js',
     '~/plugins/toggleButton.js',
+    '~/plugins/vtooltip.js',
     '~/plugins/webFontLoader.js',
   ],
   // Modules configuration
