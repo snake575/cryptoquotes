@@ -24,8 +24,16 @@
 import closeIcon from '~/assets/close.svg'
 
 export default {
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['value', 'index', 'options', 'label', 'placeholder', 'labelBy', 'trackBy', 'hasClose'],
+  props: [
+    'value',
+    'index',
+    'options',
+    'label',
+    'placeholder',
+    'labelBy',
+    'trackBy',
+    'hasClose',
+  ],
   data() {
     return { lazyValue: this.value, closeIcon }
   },
@@ -52,12 +60,12 @@ export default {
 
 <style scoped>
 .icon {
-  height:12px;
+  height: 12px;
   padding: 8px 15px 0 16px;
   margin-bottom: -2px;
 }
 .icon:hover {
-  filter: invert(0.9)
+  filter: invert(0.9);
 }
 .dot {
   height: 8px;

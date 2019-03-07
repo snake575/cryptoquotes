@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
 .flex.flex-column
   .flex.flex-wrap.items-center.b--white-20
     multiselect.dib.bb.br.b--white-20.min-width-150(
@@ -7,10 +7,10 @@
     )
     template(v-for='(option, index) in exchanges')
       multiselect.dib.bb.br.b--white-20.min-width-150(
-        :key='(option ? option.name : null)'
-        :index='index'
         v-model='exchanges[index]'
         v-bind='exchangeProps'
+        :key='(option ? option.name : null)'
+        :index='index'
         @close='removeExchange(index)'
       )
     a.inline-flex.items-center.bb.br.b--white-20.no-underline.bg-animate.hover-bg-gray.pa2(
@@ -86,68 +86,6 @@ const buttons = [
 export default {
   components: { Multiselect },
   watchQuery: true,
-  async asyncData({ store, query }) {
-    // Default options
-    let marketOption = store.state.marketOptions[0]
-    let timeKeyOption = store.state.timeKeyOptions[2]
-    let rotateMarket = false
-    let rotateMarketInterval = store.state.intervalOptions[0]
-    // Query string options
-    const {
-      exchange = [store.state.cryptowatchExchanges[0].name],
-      market = marketOption.name,
-      timekey = timeKeyOption.label,
-      rotate = rotateMarket,
-      interval = rotateMarketInterval.label,
-    } = query
-    // Set market option
-    marketOption = store.getters.getMarketOption(market)
-    // Set time key option
-    timeKeyOption = store.getters.getTimeKeyOption(timekey)
-    // Set rotation option
-    rotateMarket = JSON.parse(rotate)
-    rotateMarketInterval = store.getters.getIntervalOption(interval)
-    // Set exchange options
-    const { markets } = marketOption
-    store.commit('setExchangeOptions', markets)
-    // Set exchanges
-    let { cryptowatchExchanges, quotesExchanges } = store.state
-    const queryExchanges = Array.isArray(exchange) ? exchange : [exchange]
-    cryptowatchExchanges = cryptowatchExchanges.filter(e => queryExchanges.includes(e.name))
-    quotesExchanges = quotesExchanges.filter(e => queryExchanges.includes(e.name))
-    const allExchanges = [...cryptowatchExchanges, ...quotesExchanges]
-    const exchangesList = [...new Set(queryExchanges)]
-    const exchanges = exchangesList.map(e1 => allExchanges.find(e2 => e2.name === e1))
-    // Fetch exchanges data
-    await Promise.all([
-      ...cryptowatchExchanges.map(ex => (
-        store.dispatch('fetchCryptowatchExchangeData', {
-          exchange: ex.name,
-          market: marketOption.markets[0],
-          convert: marketOption.convert,
-        })
-      )),
-      ...quotesExchanges.map(ex => (
-        store.dispatch('fetchQuotesExchangeData', {
-          exchange: ex.name,
-          market: marketOption.markets[1],
-        })
-      )),
-      store.dispatch('fetchPrice', {
-        exchange: 'oxr',
-        market: 'usdclp',
-      }),
-    ])
-    // Return data
-    return {
-      marketOption,
-      timeKeyOption,
-      rotateMarket,
-      rotateMarketInterval,
-      exchanges,
-      exchangesList,
-    }
-  },
   filters: {
     upper(value) {
       if (!value) return ''
@@ -155,7 +93,12 @@ export default {
     },
     capitalize(value) {
       if (!value) return ''
-      return value.toString().charAt(0).toUpperCase() + value.slice(1)
+      return (
+        value
+          .toString()
+          .charAt(0)
+          .toUpperCase() + value.slice(1)
+      )
     },
     number(value) {
       if (!value) return ''
@@ -163,7 +106,10 @@ export default {
     },
     percent(value) {
       if (!value) return ''
-      return parseFloat(value).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 })
+      return parseFloat(value).toLocaleString(undefined, {
+        style: 'percent',
+        minimumFractionDigits: 2,
+      })
     },
   },
   data() {
@@ -209,30 +155,33 @@ export default {
           selected: 0,
           buttons,
         },
-        yAxis: [{
-          labels: {
-            align: 'left',
-            y: 3,
+        yAxis: [
+          {
+            labels: {
+              align: 'left',
+              y: 3,
+            },
+            title: {
+              text: 'Price',
+            },
+            height: '78%',
+            resize: {
+              enabled: true,
+            },
           },
-          title: {
-            text: 'Price',
+          {
+            labels: {
+              align: 'left',
+              y: 3,
+            },
+            title: {
+              text: 'Offset',
+            },
+            top: '80%',
+            height: '20%',
+            offset: 0,
           },
-          height: '78%',
-          resize: {
-            enabled: true,
-          },
-        }, {
-          labels: {
-            align: 'left',
-            y: 3,
-          },
-          title: {
-            text: 'Offset',
-          },
-          top: '80%',
-          height: '20%',
-          offset: 0,
-        }],
+        ],
         series: [],
         tooltip: {
           valueDecimals: 2,
@@ -277,7 +226,10 @@ export default {
     cryptowatchPriceSeries() {
       return this.filterExchangeList(this.cryptowatchExchanges, (ex, index) => {
         const market = this.cryptowatchMarket
-        const { data } = this.$store.getters.getCryptowatchExchangeData(ex.name, market)
+        const { data } = this.$store.getters.getCryptowatchExchangeData(
+          ex.name,
+          market,
+        )
         return {
           index,
           data: this.getPriceData(data),
@@ -296,7 +248,10 @@ export default {
     quotesPriceSeries() {
       return this.filterExchangeList(this.quotesExchanges, (ex, index) => {
         const market = this.quotesMarket
-        const { buy, sell } = this.$store.getters.getQuotesExchangeData(ex.name, market)
+        const { buy, sell } = this.$store.getters.getQuotesExchangeData(
+          ex.name,
+          market,
+        )
         return {
           index,
           buy: {
@@ -329,14 +284,25 @@ export default {
       })
     },
     cryptowatchPrices() {
-      return this.filterExchangeList(this.cryptowatchExchanges, ex => (
-        this.$store.getters.getCryptowatchExchangePrice(ex.name, this.cryptowatchMarket)
-      ))
+      return this.filterExchangeList(this.cryptowatchExchanges, ex =>
+        this.$store.getters.getCryptowatchExchangePrice(
+          ex.name,
+          this.cryptowatchMarket,
+        ),
+      )
     },
     quotesPrices() {
       return this.filterExchangeList(this.quotesExchanges, ex => ({
-        buy: this.$store.getters.getQuotesExchangePrice(ex.name, this.quotesMarket, 'buy'),
-        sell: this.$store.getters.getQuotesExchangePrice(ex.name, this.quotesMarket, 'sell'),
+        buy: this.$store.getters.getQuotesExchangePrice(
+          ex.name,
+          this.quotesMarket,
+          'buy',
+        ),
+        sell: this.$store.getters.getQuotesExchangePrice(
+          ex.name,
+          this.quotesMarket,
+          'sell',
+        ),
       }))
     },
     referencePriceData() {
@@ -383,24 +349,26 @@ export default {
       }))
     },
     cryptowatchPriceOffsets() {
-      return this.cryptowatchPrices.map(price => (
-        (price / this.referencePrice) - 1
-      ))
+      return this.cryptowatchPrices.map(
+        price => price / this.referencePrice - 1,
+      )
     },
     quotesPriceOffsets() {
       return this.quotesPrices.map(({ buy, sell }) => ({
-        buy: (buy / this.referencePrice) - 1,
-        sell: (sell / this.referencePrice) - 1,
+        buy: buy / this.referencePrice - 1,
+        sell: sell / this.referencePrice - 1,
       }))
     },
   },
   watch: {
     exchanges(value) {
-      value.filter(e => !!e).forEach((e, index) => {
-        if (this.exchangesList[index] !== e.name) {
-          this.exchangesList.splice(index, 1, e.name)
-        }
-      })
+      value
+        .filter(e => !!e)
+        .forEach((e, index) => {
+          if (this.exchangesList[index] !== e.name) {
+            this.exchangesList.splice(index, 1, e.name)
+          }
+        })
     },
     exchangesList() {
       this.reload()
@@ -414,6 +382,74 @@ export default {
     rotateMarket() {
       this.updateMarketRotation()
     },
+  },
+  async asyncData({ store, query }) {
+    // Default options
+    let marketOption = store.state.marketOptions[0]
+    let timeKeyOption = store.state.timeKeyOptions[2]
+    let rotateMarket = false
+    let rotateMarketInterval = store.state.intervalOptions[0]
+    // Query string options
+    const {
+      exchange = [store.state.cryptowatchExchanges[0].name],
+      market = marketOption.name,
+      timekey = timeKeyOption.label,
+      rotate = rotateMarket,
+      interval = rotateMarketInterval.label,
+    } = query
+    // Set market option
+    marketOption = store.getters.getMarketOption(market)
+    // Set time key option
+    timeKeyOption = store.getters.getTimeKeyOption(timekey)
+    // Set rotation option
+    rotateMarket = JSON.parse(rotate)
+    rotateMarketInterval = store.getters.getIntervalOption(interval)
+    // Set exchange options
+    const { markets } = marketOption
+    store.commit('setExchangeOptions', markets)
+    // Set exchanges
+    let { cryptowatchExchanges, quotesExchanges } = store.state
+    const queryExchanges = Array.isArray(exchange) ? exchange : [exchange]
+    cryptowatchExchanges = cryptowatchExchanges.filter(e =>
+      queryExchanges.includes(e.name),
+    )
+    quotesExchanges = quotesExchanges.filter(e =>
+      queryExchanges.includes(e.name),
+    )
+    const allExchanges = [...cryptowatchExchanges, ...quotesExchanges]
+    const exchangesList = [...new Set(queryExchanges)]
+    const exchanges = exchangesList.map(e1 =>
+      allExchanges.find(e2 => e2.name === e1),
+    )
+    // Fetch exchanges data
+    await Promise.all([
+      ...cryptowatchExchanges.map(ex =>
+        store.dispatch('fetchCryptowatchExchangeData', {
+          exchange: ex.name,
+          market: marketOption.markets[0],
+          convert: marketOption.convert,
+        }),
+      ),
+      ...quotesExchanges.map(ex =>
+        store.dispatch('fetchQuotesExchangeData', {
+          exchange: ex.name,
+          market: marketOption.markets[1],
+        }),
+      ),
+      store.dispatch('fetchPrice', {
+        exchange: 'oxr',
+        market: 'usdclp',
+      }),
+    ])
+    // Return data
+    return {
+      marketOption,
+      timeKeyOption,
+      rotateMarket,
+      rotateMarketInterval,
+      exchanges,
+      exchangesList,
+    }
   },
   mounted() {
     this.updateChart()
@@ -431,11 +467,13 @@ export default {
       return exchanges.filter(e => this.exchangesList.includes(e.name))
     },
     filterExchangeList(exchanges, callback) {
-      return this.exchangesList.map((name, index) => {
-        const ex = exchanges.find(e => e.name === name)
-        if (!ex) return null
-        return callback(ex, index)
-      }).filter(ex => !!ex)
+      return this.exchangesList
+        .map((name, index) => {
+          const ex = exchanges.find(e => e.name === name)
+          if (!ex) return null
+          return callback(ex, index)
+        })
+        .filter(ex => !!ex)
     },
     getPriceData(dataSet) {
       if (!dataSet) return []
@@ -444,14 +482,14 @@ export default {
       return data.map(i => [i[0] * 1000, i[4]])
     },
     getOffsetData(quotes) {
-      return quotes.map((quote) => {
+      return quotes.map(quote => {
         const ref = this.referencePriceData.find(r => r[0] === quote[0])
-        return [quote[0], ref ? ((quote[1] / ref[1]) - 1) * 100 : null]
+        return [quote[0], ref ? (quote[1] / ref[1] - 1) * 100 : null]
       })
     },
     updateChart() {
       // Add price series
-      this.cryptowatchPriceSeries.forEach((item) => {
+      this.cryptowatchPriceSeries.forEach(item => {
         this.chartOptions.series.push(item)
       })
       this.quotesPriceSeries.forEach(({ buy, sell }) => {
@@ -459,7 +497,7 @@ export default {
         this.chartOptions.series.push(sell)
       })
       // Add offset series
-      this.cryptowatchOffsetSeries.forEach((item) => {
+      this.cryptowatchOffsetSeries.forEach(item => {
         this.chartOptions.series.push(item)
       })
       this.quotesOffsetSeries.forEach(({ buy, sell }) => {
@@ -472,7 +510,8 @@ export default {
       if (this.rotateMarket) {
         this.rotateMarketIntervalId = setInterval(() => {
           const { marketOptions } = this.$store.state
-          let index = marketOptions.findIndex(x => x.name === this.marketOption.name) + 1
+          let index =
+            marketOptions.findIndex(x => x.name === this.marketOption.name) + 1
           if (index === marketOptions.length) index = 0
           this.marketOption = this.$store.state.marketOptions[index]
         }, this.rotateMarketInterval.seconds * 1000)

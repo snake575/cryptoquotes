@@ -1,24 +1,33 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    ecmaVersion: 2017,
-    sourceType: 'module',
-  },
   env: {
     browser: true,
     node: true,
   },
-  extends: ['airbnb-base', 'plugin:vue/recommended'],
+  parserOptions: {
+    parser: 'babel-eslint',
+  },
+  extends: [
+    'plugin:vue/recommended',
+    'eslint:recommended',
+    'plugin:prettier/recommended',
+    'prettier/vue',
+  ],
+  // required to lint *.vue files
+  plugins: ['vue'],
+  // add your custom rules here
   rules: {
-    // don't require extension when importing
-    'import/extensions': 0,
-    // allow unresolved imports paths
-    'import/no-unresolved': 0,
-    // allow import dependencies not listed in packages.json
-    'import/no-extraneous-dependencies': 0,
-    // don't require line ending style
-    'linebreak-style': 0,
-    // don't require semicolons
-    semi: ['error', 'never'],
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        ignores: ['nuxt', 'nuxt-link'],
+      },
+    ],
+  },
+  globals: {
+    $nuxt: true,
   },
 }
