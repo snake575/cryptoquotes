@@ -13,7 +13,7 @@ main.flex.flex-column.min-vh-100.bg-black.white-80.droid-sans-mono.f8
             :value='btcDonation'
             background='black'
             foreground='white'
-            size=150)
+            :size='150')
           a.link.dim.ba.ph3.pv2.dib.white-80(
             :href='btcDonation'
             ) Open on wallet
