@@ -10,7 +10,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "deploy": "nuxt generate && netlify deploy",
+    "deploy": "netlify deploy -d=dist",
     "analyze": "nuxt build --analyze",
     "monitor": "nuxt build --webpackmonitor",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
