@@ -43,6 +43,7 @@ export default {
     prices() {
       return {
         USDCLP: this.$store.getters.getPrice('usdclp').price,
+        USDMXN: this.$store.getters.getPrice('usdmxn').price,
       }
     },
   },

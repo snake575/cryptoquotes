@@ -42,14 +42,12 @@
     .flex-auto.bb.b--white-20.pv2.ph3
       .flex.items-center
         template(v-for='(exchange, index) in cryptowatchExchanges')
-          .dib.pr2.white-40
-            | {{ exchange.label }}
-            | {{ marketOption.currencies[1] | upper }}({{ marketOption.convert | upper }})
+          .dib.pr2.white-40 {{ exchange.label }}
           .dib(:class="[ index > 0 ? 'pr1' : 'pr3' ]") {{ cryptowatchPrices[index] | number }}
           .dib.white-40.pr3(v-if='index > 0') {{ cryptowatchPriceOffsets[index] | percent }}
         template(v-for='(exchange, index) in quotesExchanges')
           .flex.items-center
-            .dib.pr2.white-40 {{ exchange.label }} {{ marketOption.convert | upper }}
+            .dib.pr2.white-40 {{ exchange.label }}
             .dib.pr3
               div
                 .dib.pr1 {{ quotesPrices[index].buy | number }}
@@ -434,6 +432,7 @@ export default {
         store.dispatch('fetchQuotesExchangeData', {
           exchange: ex.name,
           market: marketOption.markets[1],
+          convert: marketOption.convert,
         }),
       ),
       store.dispatch('fetchPrice', {

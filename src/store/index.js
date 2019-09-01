@@ -100,6 +100,12 @@ const quotesExchanges = [
     ['#FF3D00', '#FF6E40'],
     ['btcclp', 'ethclp'],
   ),
+  new QuotesExchange(
+    'bitso',
+    'Bitso',
+    ['#9ccc65', '#c5e1a5'],
+    ['btcmxn', 'bchbtc', 'bchmxn', 'ethbtc', 'ethmxn', 'ltcbtc', 'ltcmxn'],
+  ),
 ]
 
 const cryptowatchExchanges = [
@@ -141,7 +147,7 @@ const cryptowatchExchanges = [
   ]),
 ]
 
-const prices = [new Price('usdclp', 'USDCLP')]
+const prices = [new Price('usdclp', 'USDCLP'), new Price('usdmxn', 'USDMXN')]
 
 export const state = () => ({
   quotesExchanges,
@@ -150,32 +156,32 @@ export const state = () => ({
   exchangeOptions: [...cryptowatchExchanges, ...quotesExchanges],
   marketOptions: [
     {
-      label: 'BTCUSD(CLP)',
-      name: 'btcusdclp',
-      markets: ['btcusd', 'btcclp'],
+      label: 'BTCUSD(CLP,MXN)',
+      name: 'btcusd',
+      markets: ['btcusd', 'btcclp', 'btcmxn'],
       currencies: ['btc', 'usd'],
-      convert: 'clp',
+      convert: 'usd',
     },
     {
-      label: 'ETHUSD(CLP)',
-      name: 'ethusdclp',
-      markets: ['ethusd', 'ethclp'],
+      label: 'ETHUSD(CLP,MXN)',
+      name: 'ethusd',
+      markets: ['ethusd', 'ethclp', 'ethmxn'],
       currencies: ['eth', 'usd'],
-      convert: 'clp',
+      convert: 'usd',
     },
     {
-      label: 'LTCUSD(CLP)',
-      name: 'ltcusdclp',
-      markets: ['ltcusd', 'ltcclp'],
+      label: 'LTCUSD(CLP,MXN)',
+      name: 'ltcusd',
+      markets: ['ltcusd', 'ltcclp', 'ltcmxn'],
       currencies: ['ltc', 'usd'],
-      convert: 'clp',
+      convert: 'usd',
     },
     {
-      label: 'BCHUSD(CLP)',
-      name: 'bchusdclp',
-      markets: ['bchusd', 'bchclp'],
+      label: 'BCHUSD(CLP,MXN)',
+      name: 'bchusd',
+      markets: ['bchusd', 'bchclp', 'bchmxn'],
       currencies: ['bch', 'usd'],
-      convert: 'clp',
+      convert: 'usd',
     },
     {
       label: 'ETHBTC',
@@ -284,7 +290,10 @@ export const actions = {
     )
     commit('updateCryptowatchExchangeData', { exchange, market, data })
   },
-  async fetchQuotesExchangeData({ getters, commit }, { exchange, market }) {
+  async fetchQuotesExchangeData(
+    { getters, commit },
+    { exchange, market, convert },
+  ) {
     const dataSet = getters.getQuotesExchangeData(exchange, market)
     if (
       !dataSet ||
@@ -292,8 +301,12 @@ export const actions = {
     )
       return
     const [buy, sell] = await Promise.all([
-      this.$axios.$get(`quotes/markets/${exchange}/${market}/buy/ohlc`),
-      this.$axios.$get(`quotes/markets/${exchange}/${market}/sell/ohlc`),
+      this.$axios.$get(`quotes/markets/${exchange}/${market}/buy/ohlc`, {
+        params: { convert },
+      }),
+      this.$axios.$get(`quotes/markets/${exchange}/${market}/sell/ohlc`, {
+        params: { convert },
+      }),
     ])
     commit('updateQuotesExchangeData', {
       exchange,
