@@ -439,6 +439,10 @@ export default {
         exchange: 'oxr',
         market: 'usdclp',
       }),
+      store.dispatch('fetchPrice', {
+        exchange: 'oxr',
+        market: 'usdmxn',
+      }),
     ])
     // Return data
     return {
