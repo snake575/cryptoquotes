@@ -87,7 +87,7 @@ export default {
   },
   // Nuxt Google Analytics module configuration
   // https://github.com/nuxt-community/analytics-module#setup
-  'google-analytics': {
+  googleAnalytics: {
     id: process.env.ANALYTICS_ID,
   },
 }
