@@ -71,14 +71,16 @@ export default {
       }
     },
   },
-  // Nuxt PWA module manifest configuration
-  // https://github.com/nuxt-community/pwa-module#-manifest-module
-  manifest: {
-    name: 'CryptoQuotes',
-    short_name: 'CryptoQuotes',
-    lang: 'en-US',
-    display: 'minimal-ui',
-    start_url: '/',
+  // Nuxt PWA module configuration
+  // https://github.com/nuxt-community/pwa-module
+  pwa: {
+    manifest: {
+      name: 'CryptoQuotes',
+      short_name: 'CryptoQuotes',
+      lang: 'en-US',
+      display: 'minimal-ui',
+      start_url: '/',
+    },
   },
   // Nuxt Axios module configuration
   // https://github.com/nuxt-community/axios-module#options
