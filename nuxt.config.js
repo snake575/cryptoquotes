@@ -91,5 +91,9 @@ export default {
   // https://github.com/nuxt-community/analytics-module#setup
   googleAnalytics: {
     id: process.env.ANALYTICS_ID,
+    debug: {
+      enabled: true,
+      sendHitTask: true,
+    },
   },
 }
