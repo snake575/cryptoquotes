@@ -131,3 +131,6 @@ workbox-*
 
 # Webpack Monitor
 .monitor/stats.json
+
+# Local Netlify folder
+.netlify
