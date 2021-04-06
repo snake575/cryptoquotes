@@ -46,7 +46,7 @@
     "eslint-plugin-vue": "^5.2.3",
     "netlify-cli": "^2.15.0",
     "prettier": "^1.18.2",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0"
   }
 }
